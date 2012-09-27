@@ -5,7 +5,7 @@ require 'table_cloth/version'
 
 Gem::Specification.new do |gem|
   gem.name          = "table_cloth"
-  gem.version       = Tablecloth::VERSION
+  gem.version       = TableCloth::VERSION
   gem.authors       = ["Robert Ross"]
   gem.email         = ["robert@creativequeries.com"]
   gem.description   = %q{Table Cloth helps you create a table easily.}
