@@ -29,7 +29,7 @@ describe TableCloth::Base do
     it 'stores a proc if given in options' do
       subject.column(:name) { 'Wee' }
 
-      column = subject.columns.first
+      column = subject.columns[:name]
       column.options[:proc].should be_present
       column.options[:proc].should be_kind_of(Proc)
     end
