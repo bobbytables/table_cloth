@@ -7,7 +7,7 @@ module TableCloth
       @options = options
     end
 
-    def value(object)
+    def value(object, view)
       if options[:if] && options[:if].is_a?(Symbol)
         return '' unless !!object.send(options[:if])
       end
@@ -17,7 +17,7 @@ module TableCloth
       end
 
       if options[:proc] && options[:proc].respond_to?(:call)
-        options[:proc].call(object, options)
+        options[:proc].call(object, options, view)
       else
         object.send(name)
       end

@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe TableCloth::Column do
   subject { Class.new(TableCloth::Column) }
+  let(:view_context) { ActionView::Base.new }
 
   context 'values' do
     let(:name_column) do 
@@ -9,7 +10,7 @@ describe TableCloth::Column do
     end
 
     let(:email_column) do
-      proc = lambda {|object, options|
+      proc = lambda {|object, options, view|
         object.email
       }
 
@@ -34,30 +35,30 @@ describe TableCloth::Column do
       end
 
       it 'returns the name correctly' do
-        name_column.value(model).should == 'robert'
+        name_column.value(model, view_context).should == 'robert'
       end
 
       it 'returns the email from a proc correctly' do
-        email_column.value(model).should == 'robert@example.com'
+        email_column.value(model, view_context).should == 'robert@example.com'
       end
 
       it 'does not return the email if they are not an admin' do
-        email_column_if.value(model).should be_blank
+        email_column_if.value(model, view_context).should be_blank
       end
 
       it 'returns the email if they are an admin' do
         model.admin = true
-        email_column_if.value(model).should == 'robert@example.com'
+        email_column_if.value(model, view_context).should == 'robert@example.com'
       end
 
       it 'does return the email unless they are an admin' do
         model.admin = false
-        email_column_unless.value(model).should == 'robert@example.com'
+        email_column_unless.value(model, view_context).should == 'robert@example.com'
       end
 
       it 'does return the email unless they are an admin' do
         model.admin = true
-        email_column_unless.value(model).should be_blank
+        email_column_unless.value(model, view_context).should be_blank
       end
     end
   end

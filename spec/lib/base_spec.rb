@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe TableCloth::Base do
   subject { Class.new(TableCloth::Base) }
+  let(:view_context) { ActionView::Base.new }
 
   context 'columns' do
     it 'has a column method' do
