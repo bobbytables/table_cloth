@@ -18,5 +18,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_development_dependency('rspec', '~> 2.11')
+  gem.add_development_dependency('awesome_print')
+  
   gem.add_dependency('actionpack', '~> 3.2')
 end

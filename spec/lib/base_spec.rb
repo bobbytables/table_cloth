@@ -35,4 +35,10 @@ describe TableCloth::Base do
       column.options[:proc].should be_kind_of(Proc)
     end
   end
+
+  context 'presenters' do
+    it 'has a presenter method' do
+      subject.should respond_to :presenter
+    end
+  end
 end

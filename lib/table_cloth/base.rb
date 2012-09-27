@@ -1,6 +1,8 @@
 module TableCloth
   class Base
     class << self
+      attr_reader :presenter
+
       def column(*args, &block)
         options = args.extract_options! || {}
         options[:proc] = block if block_given?
@@ -12,6 +14,10 @@ module TableCloth
 
       def columns
         @columns ||= {}
+      end
+
+      def presenter(klass)
+        @presenter = klass
       end
     end
   end
