@@ -20,5 +20,18 @@ describe TableCloth::Base do
       subject.column :name
       subject.columns.size.should == 1
     end
+
+    it 'excepts multiple column names' do
+      subject.column :name, :email
+      subject.columns.size.should == 2
+    end
+
+    it 'stores a proc if given in options' do
+      subject.column(:name) { 'Wee' }
+
+      column = subject.columns.first
+      column.options[:proc].should be_present
+      column.options[:proc].should be_kind_of(Proc)
+    end
   end
 end

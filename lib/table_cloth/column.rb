@@ -1,7 +1,10 @@
 module TableCloth
   class Column
-    def initialize(name, options)
+    attr_reader :options, :name
 
+    def initialize(name, options)
+      @name    = name
+      @options = options
     end
   end
 end
