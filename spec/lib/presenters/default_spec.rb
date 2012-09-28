@@ -28,13 +28,13 @@ describe TableCloth::Presenters::Default do
     header = subject.render_header
     doc = Nokogiri::HTML(header)
 
-    thead = doc.xpath('//thead')
+    thead = doc.xpath('.//thead')
     thead.should be_present
 
-    tr = thead.xpath('//tr')
+    tr = thead.xpath('.//tr')
     tr.should be_present
 
-    th = tr.xpath('//th')
+    th = tr.xpath('.//th')
     th.should be_present
 
     th.length.should == 3
@@ -47,8 +47,9 @@ describe TableCloth::Presenters::Default do
     tbody = doc.xpath('//tbody')
     tbody.should be_present
 
-    tbody.xpath('//tr').each_with_index do |row, row_index|
-      row.xpath('/td').each_with_index do |td, td_index|
+    tbody.xpath('.//tr').each_with_index do |row, row_index|
+      row.xpath('.//td').each_with_index do |td, td_index|
+        object = objects[row_index]
         case td_index
         when 0
           object.id.to_s      == td.text
@@ -66,12 +67,12 @@ describe TableCloth::Presenters::Default do
     table = doc.xpath('//table')
     table.should be_present
 
-    thead = table.xpath('//thead')
+    thead = table.xpath('.//thead')
     thead.should be_present
 
-    tbody = table.at_xpath('//tbody')
+    tbody = table.at_xpath('.//tbody')
     tbody.should be_present
 
-    tbody.css('tr').length.should == 3
+    tbody.xpath('.//tr').length.should == 3
   end
 end
