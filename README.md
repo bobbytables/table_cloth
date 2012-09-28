@@ -6,7 +6,7 @@ Table Cloth gives you an easy to use DSL for creating and rendering tables in ra
 
 Add this line to your application's Gemfile:
 
-    gem 'tablecloth'
+    gem 'table_cloth'
 
 And then execute:
 
