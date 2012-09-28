@@ -75,4 +75,43 @@ describe TableCloth::Presenters::Default do
 
     tbody.xpath('.//tr').length.should == 3
   end
+
+  context 'configuration' do
+    before(:all) do
+      TableCloth::Configuration.configure do |config|
+        config.table.class = 'table'
+        config.thead.class = 'thead'
+        config.th.class    = 'th'
+        config.tbody.class = 'tbody'
+        config.tr.class    = 'tr'
+        config.td.class    = 'td'
+      end
+    end
+
+    let(:doc) { Nokogiri::HTML(subject.render_table) }
+
+    it 'tables have a class attached' do
+      doc.at_xpath('//table')[:class].should include 'table'
+    end
+
+    it 'thead has a class attached' do
+      doc.at_xpath('//thead')[:class].should include 'thead'
+    end
+
+    it 'th has a class attached' do
+      doc.at_xpath('//th')[:class].should include 'th'
+    end
+
+    it 'tbody has a class attached' do
+      doc.at_xpath('//tbody')[:class].should include 'tbody'
+    end
+
+    it 'tr has a class attached' do
+      doc.at_xpath('//tr')[:class].should include 'tr'
+    end
+
+    it 'td has a class attached' do
+      doc.at_xpath('//td')[:class].should include 'td'
+    end
+  end
 end

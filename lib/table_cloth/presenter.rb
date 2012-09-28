@@ -12,14 +12,14 @@ module TableCloth
 
       if actions?
         action_options = table_definition.actions.inject({}) do |a, action|
-          a[action.action] = action.options
-          a
+          a[action.action] = action.options; a
         end
 
         columns[:actions] = Columns::Action.new(:actions, actions: action_options)
       end
     end
 
+    # Short hand so your fingers don't hurt
     def v
       view_context
     end
@@ -38,8 +38,7 @@ module TableCloth
 
     def column_names
       names = columns.inject([]) do |c, (key,column)|
-        c << (column.options[:name] || key.to_s.humanize)
-        c
+        c << (column.options[:name] || key.to_s.humanize); c
       end
 
       names << 'Actions' if actions?
@@ -48,20 +47,26 @@ module TableCloth
 
     def row_values(object)
       column_values = columns.inject([]) do |values, (key, column)|
-        values << column.value(object, view_context)
-        values
+        values << column.value(object, view_context); values
       end
     end
 
     def rows
       objects.inject([]) do |row, object|
-        row << row_values(object)
-        row
+        row << row_values(object); row
       end
     end
 
     def actions?
       table_definition.actions.any?
+    end
+
+    def wrapper_tag(type, value=nil, &block)
+      content = if block_given?
+        v.content_tag(type, TableCloth.config_for(type), &block)
+      else
+        v.content_tag(type, value, TableCloth.config_for(type))
+      end
     end
   end
 end
