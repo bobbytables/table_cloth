@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe TableCloth::Presenter do
-  let(:dummy_table) { DummyTable }
+  let(:dummy_table) { Class.new(DummyTable) }
   let(:dummy_model) do
     DummyModel.new.tap do |d|
       d.id    = 1
@@ -28,8 +28,23 @@ describe TableCloth::Presenter do
     subject.column_names.should == ['Id', 'Name', 'Email']
   end
 
+  it 'returns a column for actions if given' do
+    dummy_table.action(:edit) { '/model/1/edit' }
+    presenter = TableCloth::Presenter.new(objects, dummy_table, view_context)    
+
+    presenter.column_names.should include "Actions"
+  end
+
   it 'returns all values for a row' do
     subject.row_values(dummy_model).should == [1, 'robert', 'robert@example.com']
+  end
+
+  it 'returns an edit link in the actions column' do
+    dummy_table.action(:edit) { '/model/1/edit' }
+    presenter = TableCloth::Presenter.new(objects, dummy_table, view_context)    
+
+    column = Nokogiri::HTML(presenter.row_values(dummy_model).last)
+    column.at_xpath('//a')[:href].should == '/model/1/edit'
   end
 
   it 'generates the values for all of the rows' do

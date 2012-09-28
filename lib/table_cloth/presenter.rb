@@ -1,11 +1,23 @@
 module TableCloth
   class Presenter
-    attr_reader :view_context, :table_definition, :objects
+    attr_reader :view_context, :table_definition, :objects,
+      :columns
 
     def initialize(objects, table, view)
       @view_context     = view
       @table_definition = table
       @objects          = objects
+
+      @columns = table_definition.columns
+
+      if actions?
+        action_options = table_definition.actions.inject({}) do |a, action|
+          a[action.action] = action.options
+          a
+        end
+
+        columns[:actions] = Columns::Action.new(:actions, actions: action_options)
+      end
     end
 
     def v
@@ -25,14 +37,17 @@ module TableCloth
     end
 
     def column_names
-      table_definition.columns.inject([]) do |names, (key,column)|
-        names << (column.options[:name] || key.to_s.humanize)
-        names
+      names = columns.inject([]) do |c, (key,column)|
+        c << (column.options[:name] || key.to_s.humanize)
+        c
       end
+
+      names << 'Actions' if actions?
+      names
     end
 
     def row_values(object)
-      table_definition.columns.inject([]) do |values, (key, column)|
+      column_values = columns.inject([]) do |values, (key, column)|
         values << column.value(object, view_context)
         values
       end
@@ -43,6 +58,10 @@ module TableCloth
         row << row_values(object)
         row
       end
+    end
+
+    def actions?
+      table_definition.actions.any?
     end
   end
 end
