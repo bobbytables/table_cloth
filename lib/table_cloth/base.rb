@@ -14,13 +14,36 @@ module TableCloth
 
       def columns
         @columns ||= {}
+
+        if superclass.respond_to? :columns
+          @columns = superclass.columns.merge(@columns)
+        end
+
+        @columns
       end
 
       def presenter(klass)
         @presenter = klass
       end
-    end
 
-    presenter ::TableCloth::Presenters::Default
+      def action(*args, &block)
+        options        = args.extract_options! || {}
+        options[:proc] = block if block_given?
+
+        args.each do |action|
+          actions << Action.new(action, options)
+        end
+      end
+
+      def actions
+        @actions ||= []
+
+        if superclass.respond_to? :actions
+          @actions += superclass.actions
+        end
+
+        @actions
+      end
+    end
   end
 end
