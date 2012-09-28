@@ -1,6 +1,6 @@
-# Tablecloth
+# Table Cloth
 
-TODO: Write a gem description
+Table Cloth gives you an easy to use DSL for creating and rendering tables in rails.
 
 ## Installation
 
@@ -12,18 +12,15 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install tablecloth
-
 ## Usage
 
-TODO: Write usage instructions here
+
 
 ## Contributing
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+3. CREATE A SPEC.
+4. Commit your changes (`git commit -am 'Add some feature'`)
+5. Push to the branch (`git push origin my-new-feature`)
+6. Create new Pull Request
