@@ -41,4 +41,15 @@ describe TableCloth::Base do
       subject.should respond_to :presenter
     end
   end
+
+  context 'actions' do
+    it 'has an action method' do
+      subject.should respond_to :action
+    end
+
+    it 'it adds an acion' do
+      subject.action :edit
+      subject.actions.length.should == 1
+    end
+  end
 end
