@@ -9,16 +9,17 @@ module TableCloth
 
     def column_names
       columns.inject([]) do |names, (column_name, column)|
-        if column.available?(self)
-          names << column.human_name
-        end
-
-        names
+        names << column.human_name; names
       end + (has_actions? ? ['Actions'] : [])
     end
 
     def columns
-      self.class.columns
+      self.class.columns.inject({}) do |columns, (column_name, column)|
+        if column.available?(self)
+          columns[column_name] = column
+        end
+        columns
+      end
     end
 
     def has_actions?
