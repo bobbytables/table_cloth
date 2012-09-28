@@ -8,20 +8,20 @@ module TableCloth
       @objects          = objects
     end
 
-    def render
+    def v
+      view_context
+    end
+
+    def render_table
       raise NoMethodError, "You must override the .render method"
     end
 
-    def container
-      raise NoMethodError, "You must override the .container method"
-    end
-
-    def header
+    def render_header
       raise NoMethodError, "You must override the .header method"
     end
 
-    def row
-      raise NoMethodError, "You must override the .row method"
+    def render_rows
+      raise NoMethodError, "You must override the .rows method"
     end
 
     def column_names

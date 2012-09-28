@@ -1,5 +1,7 @@
 require 'table_cloth'
 require 'awesome_print'
+require 'nokogiri'
+require 'pry'
 
 Dir['./spec/support/**/*.rb'].each {|f| require f }
 

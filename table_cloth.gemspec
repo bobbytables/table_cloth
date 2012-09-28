@@ -19,6 +19,8 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency('rspec', '~> 2.11')
   gem.add_development_dependency('awesome_print')
-  
+  gem.add_development_dependency('nokogiri')
+  gem.add_development_dependency('pry')
+
   gem.add_dependency('actionpack', '~> 3.2')
 end

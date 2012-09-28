@@ -20,5 +20,7 @@ module TableCloth
         @presenter = klass
       end
     end
+
+    presenter ::TableCloth::Presenters::Default
   end
 end
