@@ -8,19 +8,27 @@ module TableCloth
     end
 
     def value(object, view)
-      if options[:if] && options[:if].is_a?(Symbol)
-        return '' unless !!object.send(options[:if])
-      end
-
-      if options[:unless] && options[:unless].is_a?(Symbol)
-        return '' if !!object.send(options[:unless])
-      end
-
       if options[:proc] && options[:proc].respond_to?(:call)
         options[:proc].call(object, options, view)
       else
         object.send(name)
       end
+    end
+
+    def human_name
+      name.to_s.humanize
+    end
+
+    def available?(table)
+      if options[:if] && options[:if].is_a?(Symbol)
+        return !!table.send(options[:if])
+      end
+
+      if options[:unless] && options[:unless].is_a?(Symbol)
+        return !table.send(options[:unless])
+      end
+
+      true
     end
   end
 end

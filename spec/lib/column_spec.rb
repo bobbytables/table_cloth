@@ -17,48 +17,37 @@ describe TableCloth::Column do
       TableCloth::Column.new(:my_email, proc: proc)
     end
 
-    context 'conditionals' do
-      let(:email_column_if) do
-        TableCloth::Column.new(:email, if: :admin?)
+    let(:model) do
+      DummyModel.new.tap do |d|
+        d.id    = 1
+        d.email = 'robert@example.com'
+        d.name  = 'robert'
       end
+    end
 
-      let(:email_column_unless) do
-        TableCloth::Column.new(:email, unless: :admin?)
-      end
+    it 'returns the name correctly' do
+      name_column.value(model, view_context).should == 'robert'
+    end
 
-      let(:model) do
-        DummyModel.new.tap do |d|
-          d.id    = 1
-          d.email = 'robert@example.com'
-          d.name  = 'robert'
+    it 'returns the email from a proc correctly' do
+      email_column.value(model, view_context).should == 'robert@example.com'
+    end
+
+    context '.available?' do
+      let(:dummy_table) do
+        Class.new(TableCloth::Table) do
+          column :name, if: :admin?
+
+          def admin?
+            view.admin?
+          end
         end
       end
 
-      it 'returns the name correctly' do
-        name_column.value(model, view_context).should == 'robert'
-      end
-
-      it 'returns the email from a proc correctly' do
-        email_column.value(model, view_context).should == 'robert@example.com'
-      end
-
-      it 'does not return the email if they are not an admin' do
-        email_column_if.value(model, view_context).should be_blank
-      end
-
-      it 'returns the email if they are an admin' do
-        model.admin = true
-        email_column_if.value(model, view_context).should == 'robert@example.com'
-      end
-
-      it 'does return the email unless they are an admin' do
-        model.admin = false
-        email_column_unless.value(model, view_context).should == 'robert@example.com'
-      end
-
-      it 'does return the email unless they are an admin' do
-        model.admin = true
-        email_column_unless.value(model, view_context).should be_blank
+      it 'returns true on successful constraint' do
+        table  = Class.new(DummyTable).new([model], view_context)
+        column = TableCloth::Column.new(:name, if: :admin?)
+        column.available?(table).should be_true
       end
     end
   end

@@ -34,6 +34,55 @@ describe TableCloth::Base do
       column.options[:proc].should be_present
       column.options[:proc].should be_kind_of(Proc)
     end
+
+    it '.column_names returns all names' do
+      subject.column :name, :email
+      subject.new([], view_context).column_names.should == ['Name', 'Email']
+    end
+
+    it '.column_names includes actions when given' do
+      subject.action(:edit) { '/' }
+      subject.new([], view_context).column_names.should include 'Actions'
+    end
+  end
+
+  context 'conditions' do
+    let(:dummy_model) do
+      DummyModel.new.tap do |d|
+        d.id    = 1
+        d.email = 'robert@example.com'
+        d.name  = 'robert'
+      end
+    end
+
+    context 'if' do
+      subject { DummyTable.new([dummy_model], view_context) }
+
+      it 'includes the id column when admin' do
+        subject.column_names.should include 'Id'
+      end
+
+      it 'exclused the id column when an admin' do
+        def subject.admin?
+          false
+        end
+
+        subject.column_names.should_not include 'Id'
+      end
+    end
+
+    context 'unless' do
+      subject { DummyTableUnlessAdmin.new([dummy_model], view_context) }
+      before(:each) do
+        def subject.admin?
+          false
+        end
+      end
+
+      it 'includes the id when not an admin' do
+        subject.column_names.should include 'Id'
+      end
+    end
   end
 
   context 'presenters' do
@@ -49,7 +98,7 @@ describe TableCloth::Base do
 
     it 'it adds an acion' do
       subject.action :edit
-      subject.actions.length.should == 1
+      subject.columns[:actions].actions.size.should == 1
     end
   end
 end

@@ -6,5 +6,9 @@ module TableCloth
       @action  = action
       @options = options
     end
+
+    def human_name
+      @action.to_s.humanize
+    end
   end
 end
