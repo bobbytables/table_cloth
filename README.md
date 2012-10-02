@@ -2,6 +2,8 @@
 
 Table Cloth gives you an easy to use DSL for creating and rendering tables in rails.
 
+![Travis CI](https://travis-ci.org/bobbytables/table_cloth.png)
+
 ## Installation
 
 Add this line to your application's Gemfile:
