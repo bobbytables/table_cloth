@@ -3,6 +3,13 @@ require 'spec_helper'
 describe TableCloth::Column do
   subject { Class.new(TableCloth::Column) }
   let(:view_context) { ActionView::Base.new }
+  let(:dummy_model) do
+    DummyModel.new.tap do |d|
+      d.id    = 1
+      d.email = 'robert@example.com'
+      d.name  = 'robert'
+    end
+  end
 
   context 'values' do
     let(:name_column) do 
@@ -17,20 +24,12 @@ describe TableCloth::Column do
       TableCloth::Column.new(:my_email, proc: proc)
     end
 
-    let(:model) do
-      DummyModel.new.tap do |d|
-        d.id    = 1
-        d.email = 'robert@example.com'
-        d.name  = 'robert'
-      end
-    end
-
     it 'returns the name correctly' do
-      name_column.value(model, view_context).should == 'robert'
+      name_column.value(dummy_model, view_context).should == 'robert'
     end
 
     it 'returns the email from a proc correctly' do
-      email_column.value(model, view_context).should == 'robert@example.com'
+      email_column.value(dummy_model, view_context).should == 'robert@example.com'
     end
 
     context '.available?' do
@@ -45,7 +44,7 @@ describe TableCloth::Column do
       end
 
       it 'returns true on successful constraint' do
-        table  = Class.new(DummyTable).new([model], view_context)
+        table  = Class.new(DummyTable).new([dummy_model], view_context)
         column = TableCloth::Column.new(:name, if: :admin?)
         column.available?(table).should be_true
       end
