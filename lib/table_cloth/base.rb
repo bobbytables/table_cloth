@@ -27,10 +27,12 @@ module TableCloth
     end
 
     class << self
-      attr_reader :presenter
-
-      def presenter(klass)
-        @presenter = klass
+      def presenter(klass=nil)
+        if klass
+          @presenter = klass
+        else
+          @presenter || (superclass.respond_to?(:presenter) ? superclass.presenter : raise("No Presenter"))
+        end
       end
 
       def column(*args, &block)

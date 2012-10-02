@@ -11,7 +11,7 @@ module TableCloth
         table = table_class.kind_of?(String) ? table_class.constantize : table_class
       end
 
-      presenter = options.delete(:present_with) || TableCloth::Presenters::Default
+      presenter = options.delete(:present_with) || table.presenter
 
       new.tap do |builder|
         builder.table     = table

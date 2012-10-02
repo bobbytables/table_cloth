@@ -8,6 +8,7 @@ module TableCloth
   autoload :Column, 'table_cloth/column'
   autoload :Action, 'table_cloth/action'
   autoload :Presenter, 'table_cloth/presenter'
+  autoload :ActionViewExtension, 'table_cloth/action_view_extension'
 
   module Presenters
     autoload :Default, 'table_cloth/presenters/default'
@@ -24,3 +25,5 @@ module TableCloth
 end
 
 TableCloth::Base.presenter ::TableCloth::Presenters::Default
+
+ActionView::Base.send(:include, TableCloth::ActionViewExtension)
