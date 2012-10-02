@@ -4,6 +4,7 @@ require 'table_cloth/base'
 
 module TableCloth
   autoload :Configuration, 'table_cloth/configuration'
+  autoload :Builder, 'table_cloth/builder'
   autoload :Column, 'table_cloth/column'
   autoload :Action, 'table_cloth/action'
   autoload :Presenter, 'table_cloth/presenter'
