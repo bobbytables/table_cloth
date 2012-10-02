@@ -3,7 +3,7 @@ module TableCloth
     class Action < Column
       def value(object, view_context)
         actions_html = actions.inject('') do |links, action|
-          links + view_context.capture(object, view_context, &action.options[:proc])
+          links + "\n" + view_context.capture(object, view_context, &action.options[:proc])
         end
 
         view_context.raw(actions_html)
