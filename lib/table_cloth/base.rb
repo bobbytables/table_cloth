@@ -62,8 +62,7 @@ module TableCloth
         options        = args.extract_options! || {}
         options[:proc] = block if block_given?
 
-        name = args.shift
-        add_action Action.new(name, options)
+        add_action Action.new(options)
       end
 
       def add_action(action)

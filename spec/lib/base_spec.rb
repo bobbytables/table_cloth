@@ -41,7 +41,7 @@ describe TableCloth::Base do
     end
 
     it '.column_names includes actions when given' do
-      subject.action(:edit) { '/' }
+      subject.action { '/' }
       subject.new([], view_context).column_names.should include 'Actions'
     end
   end
@@ -97,7 +97,7 @@ describe TableCloth::Base do
     end
 
     it 'it adds an acion' do
-      subject.action :edit
+      subject.action { '/' }
       subject.columns[:actions].actions.size.should == 1
     end
   end

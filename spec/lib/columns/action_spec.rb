@@ -14,7 +14,7 @@ describe TableCloth::Columns::Action do
   subject { TableCloth::Columns::Action.new(object, view_context) }
 
   it '.value returns all actions in HTML' do
-    dummy_table.action(:edit) {|object, v| "#{object.id}"}
+    dummy_table.action {|object, view| view.link_to "Edit", "#{object.id}"}
     presenter = TableCloth::Presenters::Default.new([dummy_model], dummy_table, view_context)
 
     doc = Nokogiri::HTML(presenter.render_table)
