@@ -72,6 +72,30 @@ The second approach to making tables with Table Cloth is in the view.
 <% end %>
 ```
 
+## Configuration
+
+Create an initializer called ```table_cloth.rb```
+
+Configuration looks like this:
+
+```ruby
+TableCloth::Configuration.configure do |config|
+  config.table.class = 'table table-bordered'
+  config.thead.class = ''
+  config.tbody.class = ''
+  config.tr.class =''
+  config.th.class =''
+  config.td.class =''
+end
+```
+
+You can set any value on table element configurations. For example:
+
+```ruby
+config.table.cellpadding = 1
+config.td.valign = 'top'
+```
+
 ## Contributing
 
 1. Fork it
