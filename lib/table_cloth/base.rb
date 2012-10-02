@@ -10,7 +10,7 @@ module TableCloth
     def column_names
       columns.inject([]) do |names, (column_name, column)|
         names << column.human_name; names
-      end + (has_actions? ? ['Actions'] : [])
+      end
     end
 
     def columns
