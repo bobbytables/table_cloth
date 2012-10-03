@@ -74,6 +74,27 @@ The second approach to making tables with Table Cloth is in the view.
 <% end %>
 ```
 
+## Columns
+
+You can create your own column by making a class that responds to ```.value(object, view)```
+
+```ruby
+class ImageColumn < TableCloth::Column
+  def value(object, view)
+    view.raw(view.image_tag(object.image_url))
+  end
+end
+```
+
+In your table
+```
+<%= simple_table_for @users do |table| %>
+  <% table.column :name %>
+  <% table.column :image, using: ImageColumn %>
+<% end %>
+```
+
+
 ## Configuration
 
 Create an initializer called ```table_cloth.rb```
