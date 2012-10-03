@@ -3,6 +3,13 @@ require 'spec_helper'
 describe TableCloth::Base do
   subject { Class.new(TableCloth::Base) }
   let(:view_context) { ActionView::Base.new }
+  let(:dummy_model) do
+    DummyModel.new.tap do |d|
+      d.id    = 1
+      d.email = 'robert@example.com'
+      d.name  = 'robert'
+    end
+  end
 
   context 'columns' do
     it 'has a column method' do
@@ -44,17 +51,27 @@ describe TableCloth::Base do
       subject.action { '/' }
       subject.new([], view_context).column_names.should include 'Actions'
     end
+
+    it '.column_names uses a name given to it' do
+      subject.column :email, label: 'Email Address'
+      subject.new([], view_context).column_names.should include 'Email Address'
+    end
+
+    it '.column can take a custom column' do
+      email_column = Class.new(TableCloth::Column) do
+        def value(object, view)
+          "AN EMAIL!"
+        end
+      end
+
+      subject.column :email, using: email_column
+      subject.new([dummy_model], view_context)
+
+      subject.columns[:email].value(dummy_model, view_context).should == "AN EMAIL!"
+    end
   end
 
   context 'conditions' do
-    let(:dummy_model) do
-      DummyModel.new.tap do |d|
-        d.id    = 1
-        d.email = 'robert@example.com'
-        d.name  = 'robert'
-      end
-    end
-
     context 'if' do
       subject { DummyTable.new([dummy_model], view_context) }
 

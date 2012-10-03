@@ -39,8 +39,10 @@ module TableCloth
         options = args.extract_options! || {}
         options[:proc] = block if block_given?
 
+        column_class = options.delete(:using) || Column
+
         args.each do |name|
-          add_column name, Column.new(name, options)
+          add_column name, column_class.new(name, options)
         end
       end
 

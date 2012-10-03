@@ -16,7 +16,7 @@ module TableCloth
     end
 
     def human_name
-      name.to_s.humanize
+      options[:label] || name.to_s.humanize
     end
 
     def available?(table)
