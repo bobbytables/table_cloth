@@ -28,4 +28,21 @@ describe TableCloth::Columns::Action do
     link.should be_present
     link[:href].should == '1'
   end
+
+  it '.value only returns actions that pass' do
+    admin_action     = dummy_table.action(if: :admin?) { '/admin' }
+    moderator_action = dummy_table.action(if: :moderator?) { '/moderator' }
+    table            = dummy_table.new([], view_context)
+
+    def table.admin?
+      true
+    end
+
+    def table.moderator?
+      false
+    end
+
+    dummy_table.columns[:actions].value(dummy_model, view_context, table).should include '/admin'
+    dummy_table.columns[:actions].value(dummy_model, view_context, table).should_not include '/moderator'
+  end
 end

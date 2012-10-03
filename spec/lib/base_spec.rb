@@ -26,12 +26,12 @@ describe TableCloth::Base do
 
     it '.columns returns all columns' do
       subject.column :name
-      subject.columns.size.should == 1
+      subject.should have(1).columns
     end
 
     it 'excepts multiple column names' do
       subject.column :name, :email
-      subject.columns.size.should == 2
+      subject.should have(2).columns
     end
 
     it 'stores a proc if given in options' do
@@ -50,6 +50,31 @@ describe TableCloth::Base do
     it '.column_names includes actions when given' do
       subject.action { '/' }
       subject.new([], view_context).column_names.should include 'Actions'
+    end
+
+    it '.column_names does not include actions if all action conditions fail' do
+      subject.action(if: :admin?) { '/' }
+      table = subject.new([], view_context)
+      def table.admin?
+        false
+      end
+
+      table.column_names.should_not include 'Actions'
+    end
+
+    it '.column_names include actions when only partial are available' do
+      subject.action(if: :admin?) { '/' }
+      subject.action(if: :awesome?) { '/' }
+      table = subject.new([], view_context)
+      def table.admin?
+        false
+      end
+
+      def table.awesome?
+        true
+      end
+
+      table.column_names.should include 'Actions'  
     end
 
     it '.column_names uses a name given to it' do
@@ -115,7 +140,23 @@ describe TableCloth::Base do
 
     it 'it adds an acion' do
       subject.action { '/' }
-      subject.columns[:actions].actions.size.should == 1
+      subject.columns[:actions].should have(1).actions
+    end
+
+    context 'conditionals' do
+      let!(:table_class) { Class.new(DummyTable) }
+      subject { table_class.new([dummy_model], view_context) }
+
+      it 'accepts if condition' do
+        action = table_class.action(if: :admin?) { '/conditioned' }
+        action.available?(subject).should be_true
+      end
+
+
+      it 'accepts unless condition' do
+        action = table_class.action(unless: :admin?) { '/conditioned' }
+        action.available?(subject).should be_false
+      end
     end
   end
 end

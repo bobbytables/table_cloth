@@ -73,6 +73,7 @@ module TableCloth
         end
 
         columns[:actions].actions << action
+        action
       end
 
       def has_actions?

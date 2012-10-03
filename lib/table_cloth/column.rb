@@ -7,7 +7,7 @@ module TableCloth
       @options = options
     end
 
-    def value(object, view)
+    def value(object, view, table=nil)
       if options[:proc] && options[:proc].respond_to?(:call)
         view.capture(object, options, view, &options[:proc])
       else

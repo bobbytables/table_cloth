@@ -33,7 +33,7 @@ module TableCloth
 
     def row_values(object)
       column_values = table.columns.inject([]) do |values, (key, column)|
-        values << column.value(object, view_context); values
+        values << column.value(object, view_context, table); values
       end
     end
 
