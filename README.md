@@ -102,7 +102,7 @@ A lot of tables have an actions column to give you the full CRUD effect. They ca
 class UserTable < TableCloth::Base
   column :name
   action {|object, view| view.link_to 'View', object }
-  action(if: :admin?) { view.link_to 'Delete', object, method: :delete }
+  action(if: :admin?) {|object, view| view.link_to 'Delete', object, method: :delete }
 
   def admin?
     view.current_user.admin?
