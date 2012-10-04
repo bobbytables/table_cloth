@@ -94,6 +94,22 @@ In your table
 <% end %>
 ```
 
+## Actions
+
+A lot of tables have an actions column to give you the full CRUD effect. They can be painful but Table Cloth incorporates a way to easily add them to your definition.
+
+```
+class UserTable < TableCloth::Base
+  column :name
+  action {|object, view| view.link_to 'View', object }
+  action(if: :admin?) { view.link_to 'Delete', object, method: :delete }
+
+  def admin?
+    view.current_user.admin?
+  end
+end
+```
+
 
 ## Configuration
 
