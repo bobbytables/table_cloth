@@ -1,6 +1,9 @@
 # Table Cloth
 
 Table Cloth gives you an easy to use DSL for creating and rendering tables in rails.
+It's new, so if you want a feature or have an improvement? Make an issue!
+
+Follow me! [@robertoross](http://twitter.com/robertoross)
 
 [![Build Status](https://travis-ci.org/bobbytables/table_cloth.png)](https://travis-ci.org/bobbytables/table_cloth)
 
