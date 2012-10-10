@@ -32,14 +32,14 @@ module TableCloth
     end
 
     def row_values(object)
-      column_values = table.columns.inject([]) do |values, (key, column)|
-        values << column.value(object, view_context, table); values
+      table.columns.each_with_object([]) do |(key, column), values|
+        values << column.value(object, view_context, table)
       end
     end
 
     def rows
-      objects.inject([]) do |row, object|
-        row << row_values(object); row
+      objects.each_with_object([]) do |object, row|
+        row << row_values(object)
       end
     end
 

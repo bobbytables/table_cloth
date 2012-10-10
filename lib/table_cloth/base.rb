@@ -8,17 +8,14 @@ module TableCloth
     end
 
     def column_names
-      columns.inject([]) do |names, (column_name, column)|
-        names << column.human_name; names
+      columns.each_with_object([]) do |(column_name, column), names|
+        names << column.human_name
       end
     end
 
     def columns
-      self.class.columns.inject({}) do |columns, (column_name, column)|
-        if column.available?(self)
-          columns[column_name] = column
-        end
-        columns
+      self.class.columns.each_with_object({}) do |(column_name, column), columns|
+        columns[column_name] = column if column.available?(self)
       end
     end
 
