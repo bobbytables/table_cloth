@@ -1,5 +1,6 @@
 require 'action_view'
 require 'table_cloth/version'
+require 'table_cloth/configurable_elements'
 require 'table_cloth/base'
 
 module TableCloth

@@ -43,11 +43,16 @@ module TableCloth
       end
     end
 
-    def wrapper_tag(type, value=nil, &block)
+    def wrapper_tag(type, value=nil, options={}, &block)
+      table_config = table.class.config.send(type).to_hash
+      tag_options = TableCloth.config_for(type)
+      tag_options.merge!(table_config)
+      tag_options.merge!(options)
+
       content = if block_given?
-        v.content_tag(type, TableCloth.config_for(type), &block)
+        v.content_tag(type, tag_options, &block)
       else
-        v.content_tag(type, value, TableCloth.config_for(type))
+        v.content_tag(type, value, tag_options)
       end
     end
   end

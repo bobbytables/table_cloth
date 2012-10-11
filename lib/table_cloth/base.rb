@@ -8,13 +8,13 @@ module TableCloth
     end
 
     def column_names
-      columns.each_with_object([]) do |(column_name, column), names|
+      @column_names ||= columns.each_with_object([]) do |(column_name, column), names|
         names << column.human_name
       end
     end
 
     def columns
-      self.class.columns.each_with_object({}) do |(column_name, column), columns|
+      @columns ||=self.class.columns.each_with_object({}) do |(column_name, column), columns|
         columns[column_name] = column if column.available?(self)
       end
     end
@@ -24,6 +24,10 @@ module TableCloth
     end
 
     class << self
+      def config
+        @config ||= Class.new { include ConfigurableElements }
+      end
+
       def presenter(klass=nil)
         if klass
           @presenter = klass

@@ -9,32 +9,25 @@ module TableCloth
 
       def render_rows
         wrapper_tag :tbody do
-          body = rows.inject('') do |r, values|
-            r + render_row(values)
-          end
-
-          v.raw(body)
+          v.raw objects.inject('') {|r, object| r + render_row(object) }
         end
       end
 
-      def render_row(values)
+      def render_row(object)
         wrapper_tag :tr do
-          row = values.inject('') do |tds, value|
-            tds + wrapper_tag(:td, value)
-          end
-
-          v.raw(row)
+          v.raw table.columns.inject('') {|tds, (key, column)| tds + render_td(column, object) }
         end
+      end
+
+      def render_td(column, object)
+        td_options = column.options.delete(:td_options) || {}
+        wrapper_tag(:td, column.value(object, view_context, table), td_options)
       end
 
       def render_header
         wrapper_tag :thead do
-          wrapper_tag(:tr) do
-            names = column_names.inject('') do |tags, name|
-              tags + wrapper_tag(:th, name)
-            end
-
-            v.raw(names)
+          wrapper_tag :tr do
+            v.raw column_names.inject('') {|tags, name| tags + wrapper_tag(:th, name) }
           end
         end
       end
