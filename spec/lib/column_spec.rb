@@ -17,7 +17,7 @@ describe TableCloth::Column do
     end
 
     let(:email_column) do
-      proc = lambda {|object, options, view|
+      proc = lambda {|object, view|
         object.email
       }
 
