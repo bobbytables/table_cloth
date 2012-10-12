@@ -19,10 +19,10 @@ module TableCloth
     autoload :Action, 'table_cloth/columns/action'
   end
 
-  extend self
-  def self.config_for(type)
+  def config_for(type)
     Configuration.config_for(type)
   end
+  module_function :config_for
 end
 
 TableCloth::Base.presenter ::TableCloth::Presenters::Default
