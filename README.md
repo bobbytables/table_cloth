@@ -131,12 +131,33 @@ TableCloth::Configuration.configure do |config|
 end
 ```
 
+You can also configure specific tables separately.
+
+```ruby
+class TableCloth::Base
+  column :name, :email
+  action(:edit) {|object, view| view.link_to "Edit", edit_object_path(object) }
+  
+  config.table.class = ''
+  config.thead.class = ''
+  config.th.class    = ''
+  config.tbody.class = ''
+  config.tr.class    = ''
+  config.td.class    = ''
+end
+```
+
 You can set any value on table element configurations. For example:
 
 ```ruby
 config.table.cellpadding = 1
 config.td.valign = 'top'
 ```
+
+## Thanks
+
+- TableCloth was built during my open source time at [philosophie](http://gophilosophie.com)
+- simple_form for the idea of ```simple_table_for```
 
 ## Contributing
 
