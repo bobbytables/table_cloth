@@ -144,28 +144,24 @@ describe TableCloth::Presenters::Default do
       end
     end
 
-    it 'tables have a class attached' do
-      doc.at_xpath('//table')[:class].should include 'table2'
-    end
+    include_examples "table configuration"
 
-    it 'thead has a class attached' do
-      doc.at_xpath('//thead')[:class].should include 'thead2'
-    end
+    context "is extendable" do
+      let(:dummy_table) do 
+        table = Class.new(TableCloth::Base) do
+          column :email
 
-    it 'th has a class attached' do
-      doc.at_xpath('//th')[:class].should include 'th2'
-    end
-
-    it 'tbody has a class attached' do
-      doc.at_xpath('//tbody')[:class].should include 'tbody2'
-    end
-
-    it 'tr has a class attached' do
-      doc.at_xpath('//tr')[:class].should include 'tr2'
-    end
-
-    it 'td has a class attached' do
-      doc.at_xpath('//td')[:class].should include 'td2'
+          config.table.class = 'table2'
+          config.thead.class = 'thead2'
+          config.th.class    = 'th2'
+          config.tbody.class = 'tbody2'
+          config.tr.class    = 'tr2'
+          config.td.class    = 'td2'
+        end
+        Class.new(table)
+      end
+      
+      include_examples "table configuration"
     end
   end
 end
