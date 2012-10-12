@@ -62,6 +62,28 @@ describe TableCloth::Presenters::Default do
     end
   end
 
+  context 'escaped values' do
+    let(:objects) do
+      model = DummyModel.new.tap do |d|
+        d.id = 1
+        d.email = 'robert@creativequeries.com'
+        d.name = '<script>alert("Im in your columns, snatching your main thread.")</script>'
+      end
+
+      [model]
+    end
+
+    it 'does not allow unescaped values in columns' do
+      rows = subject.render_rows
+      doc = Nokogiri::HTML(rows)
+
+      tbody = doc.xpath('//tbody')
+      tbody.xpath('//td').each do |td|
+        td.at_xpath('.//script').should_not be_present
+      end
+    end
+  end
+
   it 'creates an entire table' do
     doc = Nokogiri::HTML(subject.render_table)
     table = doc.xpath('//table')
