@@ -45,4 +45,20 @@ describe TableCloth::Columns::Action do
     dummy_table.columns[:actions].value(dummy_model, view_context, table).should include '/admin'
     dummy_table.columns[:actions].value(dummy_model, view_context, table).should_not include '/moderator'
   end
+
+  it "does not need to use the view context of a block" do
+    dummy_table.action {|object| link_to "Edit", "#{object.id}" }
+    presenter = TableCloth::Presenters::Default.new([dummy_model], dummy_table, view_context)
+
+    doc = Nokogiri::HTML(presenter.render_table)
+
+    actions_column = doc.at_xpath('//tbody')
+      .at_xpath('.//tr')
+      .xpath('.//td')
+      .last
+
+    link = actions_column.at_xpath('.//a')
+    link.should be_present
+    link[:href].should == '1'
+  end
 end
