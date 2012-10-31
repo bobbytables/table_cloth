@@ -21,7 +21,16 @@ module TableCloth
 
       def render_td(column, object)
         td_options = column.options.delete(:td_options) || {}
-        wrapper_tag(:td, column.value(object, view_context, table), td_options)
+        value = column.value(object, view_context, table)
+
+        if value.is_a?(Array)
+          options = value.pop
+          value   = value.shift
+
+          td_options.update(options)
+        end
+
+        wrapper_tag(:td, value, td_options)
       end
 
       def render_header
