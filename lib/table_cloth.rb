@@ -8,6 +8,7 @@ module TableCloth
   autoload :Builder, 'table_cloth/builder'
   autoload :Column, 'table_cloth/column'
   autoload :Action, 'table_cloth/action'
+  autoload :Actions, 'table_cloth/actions'
   autoload :Presenter, 'table_cloth/presenter'
   autoload :ActionViewExtension, 'table_cloth/action_view_extension'
 

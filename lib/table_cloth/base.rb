@@ -61,20 +61,9 @@ module TableCloth
         @columns[name] = column
       end
 
-      def action(*args, &block)
-        options        = args.extract_options! || {}
-        options[:proc] = block if block_given?
-
-        add_action Action.new(options)
-      end
-
-      def add_action(action)
-        unless has_actions?
-          columns[:actions] = Columns::Action.new(:actions)
-        end
-
-        columns[:actions].actions << action
-        action
+      def actions(options={}, &block)
+        actions = Actions.new(options, &block)
+        columns[:actions] = actions.column
       end
 
       def has_actions?

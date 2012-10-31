@@ -29,7 +29,9 @@ describe TableCloth::Presenter do
   end
 
   it 'returns an edit link in the actions column' do
-    dummy_table.action {|object, view| view.link_to 'Edit', '/model/1/edit' }
+    dummy_table.actions do
+      action {|object, view| view.link_to 'Edit', '/model/1/edit' }
+    end
     presenter = TableCloth::Presenter.new(objects, dummy_table, view_context)    
 
     column = Nokogiri::HTML(presenter.row_values(dummy_model).last)
