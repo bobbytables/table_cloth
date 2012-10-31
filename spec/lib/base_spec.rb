@@ -48,12 +48,15 @@ describe TableCloth::Base do
     end
 
     it '.column_names includes actions when given' do
-      subject.action { '/' }
+      subject.actions { action { } }
       subject.new([], view_context).column_names.should include 'Actions'
     end
 
     it '.column_names does not include actions if all action conditions fail' do
-      subject.action(if: :admin?) { '/' }
+      subject.actions do
+        action(if: :admin?) { '/' }
+      end
+
       table = subject.new([], view_context)
       def table.admin?
         false
@@ -63,8 +66,11 @@ describe TableCloth::Base do
     end
 
     it '.column_names include actions when only partial are available' do
-      subject.action(if: :admin?) { '/' }
-      subject.action(if: :awesome?) { '/' }
+      subject.actions do
+        action(if: :admin?) { '/' }
+        action(if: :awesome?) { '/' }
+      end
+      
       table = subject.new([], view_context)
       def table.admin?
         false
@@ -134,29 +140,13 @@ describe TableCloth::Base do
   end
 
   context 'actions' do
-    it 'has an action method' do
-      subject.should respond_to :action
-    end
-
-    it 'it adds an acion' do
-      subject.action { '/' }
-      subject.columns[:actions].should have(1).actions
-    end
-
-    context 'conditionals' do
-      let!(:table_class) { Class.new(DummyTable) }
-      subject { table_class.new([dummy_model], view_context) }
-
-      it 'accepts if condition' do
-        action = table_class.action(if: :admin?) { '/conditioned' }
-        action.available?(subject).should be_true
+    it "takes a block" do
+      subject.actions do
+        action { 'Edit' }
+        action { 'Delete' }
       end
 
-
-      it 'accepts unless condition' do
-        action = table_class.action(unless: :admin?) { '/conditioned' }
-        action.available?(subject).should be_false
-      end
+      subject.columns[:actions].should have(2).actions
     end
   end
 end

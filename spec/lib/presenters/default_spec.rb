@@ -139,15 +139,27 @@ describe TableCloth::Presenters::Default do
   end
 
   context 'specific configuration' do
-    let(:doc) { Nokogiri::HTML(subject.render_table) }
     let(:dummy_table) do
       Class.new(TableCloth::Base) do
         column :email, td_options: { class: 'email_column' }
       end
     end
 
+    let(:dummy_table_with_actions) { Class.new(DummyTableWithActions) }
+
     it 'td has a class set' do
+      doc = Nokogiri::HTML(subject.render_table)
       doc.at_xpath('//td')[:class].should include 'email_column'
+    end
+
+    context 'actions column' do
+      let(:dummy_table) { Class.new(DummyTableWithActions) }
+
+      it 'actions column has a class set' do
+        doc = Nokogiri::HTML(subject.render_table)
+        td = doc.at_css('td:last')
+        td[:class].should include "actions"
+      end
     end
   end
 
