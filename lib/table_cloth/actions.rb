@@ -15,5 +15,9 @@ module TableCloth
 
       column.actions << Action.new(options)
     end
+
+    def all
+      column.actions
+    end
   end
 end
