@@ -145,8 +145,6 @@ describe TableCloth::Presenters::Default do
       end
     end
 
-    let(:dummy_table_with_actions) { Class.new(DummyTableWithActions) }
-
     it 'td has a class set' do
       doc = Nokogiri::HTML(subject.render_table)
       doc.at_xpath('//td')[:class].should include 'email_column'
@@ -155,10 +153,21 @@ describe TableCloth::Presenters::Default do
     context 'actions column' do
       let(:dummy_table) { Class.new(DummyTableWithActions) }
 
-      it 'actions column has a class set' do
+      specify 'actions column has a class set' do
         doc = Nokogiri::HTML(subject.render_table)
         td = doc.at_css('td:last')
         td[:class].should include "actions"
+      end
+    end
+
+    context 'by value of row column' do
+      let(:dummy_table) { Class.new(DummyTableWithValueOptions) }
+
+      specify 'column has options because of value' do
+        doc = Nokogiri::HTML(subject.render_table)
+        td = doc.at_xpath('//td')
+        expect(td.text).to include "robert@creativequeries.com"
+        expect(td[:class]).to eq("special-class")
       end
     end
   end

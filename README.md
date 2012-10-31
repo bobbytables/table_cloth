@@ -136,7 +136,7 @@ end
 You can also configure specific tables separately.
 
 ```ruby
-class TableCloth::Base
+class UserTable < TableCloth::Base
   column :name, :email
   action(:edit) {|object, view| view.link_to "Edit", edit_object_path(object) }
   
@@ -154,6 +154,31 @@ You can set any value on table element configurations. For example:
 ```ruby
 config.table.cellpadding = 1
 config.td.valign = 'top'
+```
+
+You also have the option to specify options on a specific column with the ```td_options``` key.
+
+```ruby
+class UserTable < TableCloth::Base
+  column :name, td_options: { class: "awesome-column" }
+end
+```
+
+Not good enough? Fine... you can do row / column specific config as well for a TD.
+
+```ruby
+class UserTable < TableCloth::Base
+  column :name do |user|
+    [user.name, {class: "#{user.type}-user"}]
+  end
+end
+
+```
+
+This would render something alow the lines of:
+
+```html
+<td class="admin-user">Robert Ross</td>
 ```
 
 ## Thanks
