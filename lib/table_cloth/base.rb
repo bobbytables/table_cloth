@@ -1,5 +1,7 @@
 module TableCloth
   class Base
+    NoPresenterError = Class.new(Exception)
+
     attr_reader :collection, :view
 
     def initialize(collection, view)
@@ -29,11 +31,9 @@ module TableCloth
       end
 
       def presenter(klass=nil)
-        if klass
-          @presenter = klass
-        else
-          @presenter || (superclass.respond_to?(:presenter) ? superclass.presenter : raise("No Presenter"))
-        end
+        return @presenter = klass if klass
+
+        @presenter || (superclass.respond_to?(:presenter) ? superclass.presenter : NoPresenterError.new("No Presenter"))
       end
 
       def column(*args, &block)
@@ -62,8 +62,12 @@ module TableCloth
       end
 
       def actions(options={}, &block)
-        actions = Actions.new(options, &block)
-        columns[:actions] = actions.column
+        if block_given?
+          actions = Actions.new(options, &block)
+          columns[:actions] = actions.column
+        end
+
+        columns[:actions].actions
       end
 
       def has_actions?
