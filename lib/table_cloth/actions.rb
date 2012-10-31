@@ -4,7 +4,7 @@ module TableCloth
 
     def initialize(options={}, &block)
       @options = options
-      @column = Columns::Action.new(:actions)
+      @column = Columns::Action.new(:actions, options)
 
       block.arity > 0 ? block.call(self) : instance_eval(&block)
     end
