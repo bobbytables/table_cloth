@@ -37,7 +37,7 @@ class UserTable < TableCloth::Base
   # Columns can be provided a block
   #
   # column :name do |object|
-  #   object.downcase
+  #   object.name.downcase
   # end
   #
   # Columns can also have conditionals if you want.
