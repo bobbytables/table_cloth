@@ -46,7 +46,8 @@ describe TableCloth::Columns::Action do
       false
     end
 
-    actions_value = dummy_table.columns[:actions].value(dummy_model, view_context, table)
+    actions_column = dummy_table.columns[:actions] 
+    actions_value = actions_column.value(dummy_model, view_context, table)
 
     actions_value.should include '/admin'
     actions_value.should_not include '/moderator'

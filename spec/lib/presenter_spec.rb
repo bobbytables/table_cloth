@@ -30,11 +30,12 @@ describe TableCloth::Presenter do
 
   it 'returns an edit link in the actions column' do
     dummy_table.actions do
-      action {|object, view| view.link_to 'Edit', '/model/1/edit' }
+      action {|object, view| link_to 'Edit', '/model/1/edit' }
     end
     presenter = TableCloth::Presenter.new(objects, dummy_table, view_context)    
 
-    column = Nokogiri::HTML(presenter.row_values(dummy_model).last)
+    actions_value = presenter.row_values(dummy_model).last
+    column = Nokogiri::HTML(actions_value)
     column.at_xpath('//a')[:href].should == '/model/1/edit'
     column.at_xpath('//a').text.should == 'Edit'
   end
