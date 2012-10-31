@@ -8,7 +8,9 @@ describe TableCloth::Builder do
     it 'can build a table on the fly with a block' do
       new_table = subject.build([], view_context) do |table|
         table.column :name
-        table.action(:edit) { '/model/1/edit' }
+        table.actions do
+          action { '/model/1/edit' }
+        end
       end
 
       new_table.table.columns.length.should == 2

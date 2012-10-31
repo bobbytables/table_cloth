@@ -23,5 +23,7 @@ class <%= class_name %>Table < TableCloth::Base
   # Pass a block with an arity of 2, (object, view context).
   # You can add as many actions as you want.
   #
-  # action {|object, view| view.link_to "Edit", view.edit_object_path(object) }
+  # actions do
+  #   action {|object| link_to "Edit", edit_object_path(object) }
+  # end
 end
