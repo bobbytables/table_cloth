@@ -106,8 +106,8 @@ A lot of tables have an actions column to give you the full CRUD effect. They ca
 ```
 class UserTable < TableCloth::Base
   column :name
-  action {|object, view| view.link_to 'View', object }
-  action(if: :admin?) {|object, view| view.link_to 'Delete', object, method: :delete }
+  action {|object| link_to 'View', object }
+  action(if: :admin?) {|object| link_to 'Delete', object, method: :delete }
 
   def admin?
     view.current_user.admin?
@@ -138,7 +138,7 @@ You can also configure specific tables separately.
 ```ruby
 class UserTable < TableCloth::Base
   column :name, :email
-  action(:edit) {|object, view| view.link_to "Edit", edit_object_path(object) }
+  action(:edit) {|object| link_to "Edit", edit_object_path(object) }
   
   config.table.class = ''
   config.thead.class = ''
