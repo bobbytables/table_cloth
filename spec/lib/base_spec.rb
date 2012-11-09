@@ -149,4 +149,18 @@ describe TableCloth::Base do
       subject.columns[:actions].should have(2).actions
     end
   end
+
+  context "configuration" do
+    subject { Class.new(TableCloth::Base) }
+    let(:sibling1_class) { Class.new(subject) }
+    let(:sibling2_class) { Class.new(subject) }
+
+    it "allows configuration" do
+      expect { subject.config.table.cellpadding = '0' }.to change { subject.config.table.cellpadding }.to('0')
+    end
+
+    it "doesn't interfere with configuration of parent classes" do
+      expect { sibling1_class.config.table.cellpadding = '0' }.not_to change { sibling2_class.config.table.cellpadding }
+    end
+  end
 end

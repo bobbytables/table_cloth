@@ -3,6 +3,7 @@ module TableCloth
     NoPresenterError = Class.new(Exception)
 
     attr_reader :collection, :view
+    class_attribute :config
 
     def initialize(collection, view)
       @collection = collection
@@ -16,7 +17,7 @@ module TableCloth
     end
 
     def columns
-      @columns ||=self.class.columns.each_with_object({}) do |(column_name, column), columns|
+      @columns ||= self.class.columns.each_with_object({}) do |(column_name, column), columns|
         columns[column_name] = column if column.available?(self)
       end
     end
