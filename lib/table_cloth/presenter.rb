@@ -45,7 +45,7 @@ module TableCloth
 
     def wrapper_tag(type, value=nil, options={}, &block)
       table_config = table.class.config.send(type).to_hash
-      tag_options = TableCloth.config_for(type)
+      tag_options = TableCloth.config_for(type).dup
       tag_options.merge!(table_config)
       tag_options.merge!(options)
 
