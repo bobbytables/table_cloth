@@ -22,7 +22,7 @@ module TableCloth
   end
 
   def config_for(type)
-    Configuration.config_for(type)
+    Configuration.config_for(type).dup
   end
   module_function :config_for
 end

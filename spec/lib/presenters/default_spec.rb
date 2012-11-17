@@ -11,14 +11,7 @@ describe TableCloth::Presenters::Default do
   end
 
   let(:objects) do
-    3.times.map do |n|
-      num = n+1
-      DummyModel.new.tap do |d|
-        d.id    = num # Wat
-        d.email = "robert#{num}@example.com"
-        d.name  = "robert#{num}"
-      end 
-    end
+    3.times.map {|n| dummy_model.dup.tap {|dm| dm.id = n+1 } }
   end
 
   let(:view_context) { ActionView::Base.new }
@@ -190,8 +183,8 @@ describe TableCloth::Presenters::Default do
     include_examples "table configuration"
 
     context "is extendable" do
-      let(:dummy_table) do 
-        table = Class.new(TableCloth::Base) do
+      let(:parent_table) do
+        Class.new(TableCloth::Base) do
           column :email
 
           config.table.class = 'table2'
@@ -201,7 +194,10 @@ describe TableCloth::Presenters::Default do
           config.tr.class    = 'tr2'
           config.td.class    = 'td2'
         end
-        Class.new(table)
+      end
+
+      let(:dummy_table) do
+        Class.new(parent_table)
       end
       
       include_examples "table configuration"

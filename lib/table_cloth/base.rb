@@ -3,7 +3,8 @@ module TableCloth
     NoPresenterError = Class.new(Exception)
 
     attr_reader :collection, :view
-    class_attribute :config
+    class_attribute :config, instance_accessor: false
+    self.config = Class.new { include ConfigurableElements }
 
     def initialize(collection, view)
       @collection = collection
@@ -27,10 +28,6 @@ module TableCloth
     end
 
     class << self
-      def config
-        @config ||= Class.new { include ConfigurableElements }
-      end
-
       def presenter(klass=nil)
         return @presenter = klass if klass
 
