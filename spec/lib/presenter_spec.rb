@@ -49,22 +49,16 @@ describe TableCloth::Presenter do
   end
 
   context 'tags' do
-    before(:all) { TableCloth::Configuration.table.class = 'stuff' }
     it '.wrapper_tag includes config for a tag in block form' do
-      table = subject.wrapper_tag(:table) do
-        'Hello'
-      end
-      table = Nokogiri::HTML(table)
-
-      table.at_xpath('//table')[:class].should == 'stuff'
-      table.at_xpath('//table').text.should include 'Hello'
+      TableCloth::Configuration.table.should_receive(:to_hash).and_return(class: "stuff")
+      table = subject.wrapper_tag(:table) { "Hello "}
+      Nokogiri::HTML(table).at_xpath('//table')[:class].should == 'stuff'
     end
 
     it '.wrapper_tag includes config for a tag without a block' do
+      TableCloth::Configuration.table.should_receive(:to_hash).and_return(class: "stuff")
       table = subject.wrapper_tag(:table, 'Hello')
-      table = Nokogiri::HTML(table)
-      table.at_xpath('//table')[:class].should == 'stuff'
-      table.at_xpath('//table').text.should include 'Hello'
+      Nokogiri::HTML(table).at_xpath('//table')[:class].should == 'stuff'
     end
   end
 end
