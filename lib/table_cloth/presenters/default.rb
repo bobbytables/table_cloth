@@ -20,7 +20,7 @@ module TableCloth
       end
 
       def render_td(column, object)
-        td_options = column.options.delete(:td_options) || {}
+        td_options = column.options[:td_options] || {}
         value = column.value(object, view_context, table)
 
         if value.is_a?(Array)
