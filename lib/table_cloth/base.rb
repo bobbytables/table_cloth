@@ -30,8 +30,13 @@ module TableCloth
     class << self
       def presenter(klass=nil)
         return @presenter = klass if klass
+        return @presenter if @presenter
 
-        @presenter || (superclass.respond_to?(:presenter) ? superclass.presenter : NoPresenterError.new("No Presenter"))
+        if superclass.respond_to?(:presenter)
+          superclass.presenter
+        else
+          raise NoPresenterError, "No Presenter"
+        end
       end
 
       def column(*args, &block)
