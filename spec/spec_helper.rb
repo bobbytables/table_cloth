@@ -1,9 +1,12 @@
 require 'table_cloth'
 require 'awesome_print'
 require 'nokogiri'
+require 'factory_girl'
 require 'pry'
 
 Dir['./spec/support/**/*.rb'].each {|f| require f }
+
+FactoryGirl.find_definitions
 
 ActionView::Base.send :include, TableClothViewMocks
 
