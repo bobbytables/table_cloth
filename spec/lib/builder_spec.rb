@@ -5,19 +5,11 @@ describe TableCloth::Builder do
   let(:view_context) { ActionView::Base.new }
 
   context '.build' do
-    it 'can build a table on the fly with a block' do
-      new_table = subject.build([], view_context) do |table|
-        table.column :name
-        table.actions do
-          action { '/model/1/edit' }
-        end
-      end
-
-      new_table.table.columns.length.should == 2
-      new_table.table.columns[:actions].actions.length.should == 1
+    it 'builds a table on the fly with a block' do
+      expect {|b| subject.build([], view_context, &b) }.to yield_control
     end
 
-    it 'can build a table from a class name' do
+    it 'builds a table from a class name' do
       new_table = subject.build([], view_context, with: DummyTable)
       new_table.table.should == DummyTable
     end
@@ -35,9 +27,8 @@ describe TableCloth::Builder do
 
     it '.to_s renders a table' do
       new_table = subject.build([], view_context, with: DummyTable)
-      body      = new_table.to_s
-      doc       = Nokogiri::HTML(body)
-      doc.at_xpath('//table').should be_present
+      new_table.presenter.should_receive(:render_table).once
+      new_table.to_s
     end
   end
 end
