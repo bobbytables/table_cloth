@@ -75,7 +75,9 @@ The second approach to making tables with Table Cloth is in the view.
 <%= simple_table_for @users do |t| %>
   <% t.column :name %>
   <% t.column :email %>
-  <% t.action {|user| link_to "View", user %>
+  <% t.actions do %>
+    <% action {|user| link_to "View", user } %>
+  <% end %>
 <% end %>
 ```
 
@@ -106,8 +108,11 @@ A lot of tables have an actions column to give you the full CRUD effect. They ca
 ```
 class UserTable < TableCloth::Base
   column :name
-  action {|object| link_to 'View', object }
-  action(if: :admin?) {|object| link_to 'Delete', object, method: :delete }
+
+  actions do
+    action {|object| link_to 'View', object }
+    action(if: :admin?) {|object| link_to 'Delete', object, method: :delete }
+  end
 
   def admin?
     view.current_user.admin?
