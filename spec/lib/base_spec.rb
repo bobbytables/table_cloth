@@ -71,17 +71,19 @@ describe TableCloth::Base do
       end
     end
 
-    it '.column can take a custom column' do
-      email_column = Class.new(TableCloth::Column) do
-        def value(object, view)
-          "AN EMAIL!"
+    context "custom" do
+      let(:custom_column) do
+        Class.new(TableCloth::Column) do
+          def value(object, view)
+            "AN EMAIL!"
+          end
         end
       end
 
-      subject.column :email, using: email_column
-      subject.new([dummy_model], view_context)
-
-      subject.columns[:email].value(dummy_model, view_context).should == "AN EMAIL!"
+      it '.column can take a custom column' do
+        subject.column :email, using: custom_column
+        subject.columns[:email].value(dummy_model, view_context).should == "AN EMAIL!"
+      end
     end
   end
 
