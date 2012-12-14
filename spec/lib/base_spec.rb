@@ -96,10 +96,7 @@ describe TableCloth::Base do
       end
 
       it 'exclused the id column when an admin' do
-        def subject.admin?
-          false
-        end
-
+        subject.stub admin?: false
         subject.column_names.should_not include 'Id'
       end
     end
@@ -107,9 +104,7 @@ describe TableCloth::Base do
     context 'unless' do
       subject { DummyTableUnlessAdmin.new([dummy_model], view_context) }
       before(:each) do
-        def subject.admin?
-          false
-        end
+        subject.stub admin?: false
       end
 
       it 'includes the id when not an admin' do
