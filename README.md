@@ -143,7 +143,10 @@ You can also configure specific tables separately.
 ```ruby
 class UserTable < TableCloth::Base
   column :name, :email
-  action(:edit) {|object| link_to "Edit", edit_object_path(object) }
+
+  actions do
+    action {|object| link_to "Edit", edit_object_path(object) }
+  end
   
   config.table.class = ''
   config.thead.class = ''
