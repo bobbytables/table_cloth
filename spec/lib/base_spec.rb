@@ -3,17 +3,12 @@ require 'spec_helper'
 describe TableCloth::Base do
   subject { Class.new(TableCloth::Base) }
   let(:view_context) { ActionView::Base.new }
-  let(:dummy_model) do
-    DummyModel.new.tap do |d|
-      d.id    = 1
-      d.email = 'robert@example.com'
-      d.name  = 'robert'
-    end
-  end
+  let(:dummy_model) { FactoryGirl.build(:dummy_model) }
+  let(:table_instance) { subject.new([], view_context) }
 
   context 'columns' do
     it 'has a column method' do
-      subject.should respond_to :column
+      expect(subject).to respond_to :column
     end
 
     it 'column accepts a name' do
@@ -26,66 +21,54 @@ describe TableCloth::Base do
 
     it '.columns returns all columns' do
       subject.column :name
-      subject.should have(1).columns
+      expect(subject).to have(1).columns
     end
 
-    it 'excepts multiple column names' do
+    it 'accepts multiple column names' do
       subject.column :name, :email
-      subject.should have(2).columns
+      expect(subject).to have(2).columns
     end
 
     it 'stores a proc if given in options' do
       subject.column(:name) { 'Wee' }
 
       column = subject.columns[:name]
-      column.options[:proc].should be_present
-      column.options[:proc].should be_kind_of(Proc)
+      expect(column.options[:proc]).to be_present
+      expect(column.options[:proc]).to be_kind_of(Proc)
     end
 
-    it '.column_names returns all names' do
-      subject.column :name, :email
-      subject.new([], view_context).column_names.should == ['Name', 'Email']
-    end
+    context ".column_names" do
+      before(:each) { table_instance.stub admin?: false, awesome?: true }
 
-    it '.column_names includes actions when given' do
-      subject.actions { action { } }
-      subject.new([], view_context).column_names.should include 'Actions'
-    end
-
-    it '.column_names does not include actions if all action conditions fail' do
-      subject.actions do
-        action(if: :admin?) { '/' }
+      it 'returns all names' do
+        subject.column :name, :email
+        table_instance.column_names.should =~ ['Name', 'Email']
       end
 
-      table = subject.new([], view_context)
-      def table.admin?
-        false
+      it 'includes actions when given' do
+        subject.actions { action { } }
+        table_instance.column_names.should include 'Actions'
       end
 
-      table.column_names.should_not include 'Actions'
-    end
-
-    it '.column_names include actions when only partial are available' do
-      subject.actions do
-        action(if: :admin?) { '/' }
-        action(if: :awesome?) { '/' }
-      end
-      
-      table = subject.new([], view_context)
-      def table.admin?
-        false
+      it 'does not include actions if all action conditions fail' do
+        subject.actions do
+          action(if: :admin?) { '/' }
+        end
+        table_instance.column_names.should_not include 'Actions'
       end
 
-      def table.awesome?
-        true
+      it 'include actions when only partial are available' do
+        subject.actions do
+          action(if: :admin?) { '/' }
+          action(if: :awesome?) { '/' }
+        end
+        table_instance.column_names.should include 'Actions'  
       end
 
-      table.column_names.should include 'Actions'  
-    end
-
-    it '.column_names uses a name given to it' do
-      subject.column :email, label: 'Email Address'
-      subject.new([], view_context).column_names.should include 'Email Address'
+      it 'uses a name given to it' do
+        subject.column :email, label: 'Email Address'
+        table_instance.column_names.should include 'Email Address'
+      end
     end
 
     it '.column can take a custom column' do
