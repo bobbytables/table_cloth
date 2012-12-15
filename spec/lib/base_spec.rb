@@ -33,22 +33,16 @@ describe TableCloth::Base do
       subject.column(:name) { 'Wee' }
 
       column = subject.columns[:name]
-      expect(column.options[:proc]).to be_present
-      expect(column.options[:proc]).to be_kind_of(Proc)
+      expect(column[:options][:proc]).to be_present
+      expect(column[:options][:proc]).to be_kind_of(Proc)
     end
 
     context "custom" do
-      let(:custom_column) do
-        Class.new(TableCloth::Column) do
-          def value(object, view)
-            "AN EMAIL!"
-          end
-        end
-      end
+      let(:custom_column) { stub(:custom, value: "AN EMAIL") }
 
       it '.column can take a custom column' do
         subject.column :email, using: custom_column
-        subject.columns[:email].value(dummy_model, view_context).should == "AN EMAIL!"
+        expect(subject.columns[:email][:class]).to eq(custom_column)
       end
     end
   end

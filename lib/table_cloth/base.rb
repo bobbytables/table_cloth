@@ -30,7 +30,7 @@ module TableCloth
         column_class = options.delete(:using) || Column
 
         args.each do |name|
-          add_column name, column_class.new(name, options)
+          add_column(class: column_class, options: options, name: name)
         end
       end
 
@@ -43,7 +43,7 @@ module TableCloth
         @columns
       end
 
-      def add_column(name, column)
+      def add_column(options)
         @columns ||= {}
         @columns[options[:name]] = options
       end
