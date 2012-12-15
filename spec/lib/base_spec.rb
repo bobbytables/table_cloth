@@ -59,17 +59,6 @@ describe TableCloth::Base do
     end
   end
 
-  context 'actions' do
-    it "takes a block" do
-      subject.actions do
-        action { 'Edit' }
-        action { 'Delete' }
-      end
-
-      expect(subject.columns[:actions]).to be_kind_of TableCloth::Columns::Action
-    end
-  end
-
   context "configuration" do
     subject { Class.new(TableCloth::Base) }
     let(:sibling1_class) { Class.new(subject) }
