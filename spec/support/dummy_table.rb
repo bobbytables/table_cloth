@@ -1,5 +1,5 @@
 class DummyTable < TableCloth::Base
-  column :id, if: :admin?
+  column :id
   column :name
   column :email
 

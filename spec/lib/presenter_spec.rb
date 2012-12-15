@@ -10,6 +10,35 @@ describe TableCloth::Presenter do
   let(:view_context) { ActionView::Base.new }
   subject { TableCloth::Presenter.new(objects, dummy_table, view_context) }
 
+
+  context ".column_names" do
+    let(:table_instance) { dummy_table.new(objects, view_context) }
+    before(:each) { table_instance.stub admin?: false, awesome?: true }
+
+    it 'returns all names' do
+      dummy_table.column :name, :email
+      subject.column_names.should =~ ["Id", "Name", "Email"]
+    end
+
+    it 'includes actions when given' do
+      dummy_table.actions { action { } }
+      subject.column_names.should include 'Actions'
+    end
+
+    it 'include actions when only partial are available' do
+      dummy_table.actions do
+        action(if: :admin?) { '/' }
+        action(if: :awesome?) { '/' }
+      end
+      subject.column_names.should include 'Actions'  
+    end
+
+    it 'uses a name given to it' do
+      dummy_table.column :email, label: 'Email Address'
+      subject.column_names.should include 'Email Address'
+    end
+  end
+
   it 'returns all values for a row' do
     subject.row_values(dummy_model).should == [dummy_model.id, dummy_model.name, dummy_model.email]
   end

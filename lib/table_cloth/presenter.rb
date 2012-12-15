@@ -4,10 +4,10 @@ module TableCloth
       :table
 
     def initialize(objects, table, view)
-      @view_context     = view
+      @view_context = view
       @table_definition = table
-      @objects          = objects
-      @table            = table_definition.new(objects, view)
+      @objects = objects
+      @table = table_definition.new(objects, view)
     end
 
     # Short hand so your fingers don't hurt
@@ -28,7 +28,9 @@ module TableCloth
     end
 
     def column_names
-      table.column_names
+      @column_names ||= table.columns.each_with_object([]) do |(column_name, column), names|
+        names << column.human_name
+      end
     end
 
     def row_values(object)

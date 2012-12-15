@@ -37,40 +37,6 @@ describe TableCloth::Base do
       expect(column.options[:proc]).to be_kind_of(Proc)
     end
 
-    context ".column_names" do
-      before(:each) { table_instance.stub admin?: false, awesome?: true }
-
-      it 'returns all names' do
-        subject.column :name, :email
-        table_instance.column_names.should =~ ['Name', 'Email']
-      end
-
-      it 'includes actions when given' do
-        subject.actions { action { } }
-        table_instance.column_names.should include 'Actions'
-      end
-
-      it 'does not include actions if all action conditions fail' do
-        subject.actions do
-          action(if: :admin?) { '/' }
-        end
-        table_instance.column_names.should_not include 'Actions'
-      end
-
-      it 'include actions when only partial are available' do
-        subject.actions do
-          action(if: :admin?) { '/' }
-          action(if: :awesome?) { '/' }
-        end
-        table_instance.column_names.should include 'Actions'  
-      end
-
-      it 'uses a name given to it' do
-        subject.column :email, label: 'Email Address'
-        table_instance.column_names.should include 'Email Address'
-      end
-    end
-
     context "custom" do
       let(:custom_column) do
         Class.new(TableCloth::Column) do
@@ -83,32 +49,6 @@ describe TableCloth::Base do
       it '.column can take a custom column' do
         subject.column :email, using: custom_column
         subject.columns[:email].value(dummy_model, view_context).should == "AN EMAIL!"
-      end
-    end
-  end
-
-  context 'conditions' do
-    context 'if' do
-      subject { DummyTable.new([dummy_model], view_context) }
-
-      it 'includes the id column when admin' do
-        subject.column_names.should include 'Id'
-      end
-
-      it 'exclused the id column when an admin' do
-        subject.stub admin?: false
-        subject.column_names.should_not include 'Id'
-      end
-    end
-
-    context 'unless' do
-      subject { DummyTableUnlessAdmin.new([dummy_model], view_context) }
-      before(:each) do
-        subject.stub admin?: false
-      end
-
-      it 'includes the id when not an admin' do
-        subject.column_names.should include 'Id'
       end
     end
   end
@@ -126,7 +66,7 @@ describe TableCloth::Base do
         action { 'Delete' }
       end
 
-      subject.columns[:actions].should have(2).actions
+      expect(subject.columns[:actions]).to be_kind_of TableCloth::Columns::Action
     end
   end
 

@@ -11,12 +11,6 @@ module TableCloth
       @view       = view
     end
 
-    def column_names
-      @column_names ||= columns.each_with_object([]) do |(column_name, column), names|
-        names << column.human_name
-      end
-    end
-
     def columns
       @columns ||= self.class.columns.each_with_object({}) do |(column_name, column), columns|
         columns[column_name] = column if column.available?(self)
