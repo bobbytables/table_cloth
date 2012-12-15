@@ -20,22 +20,17 @@ describe TableCloth::Column do
     it 'returns the email from a proc correctly' do
       email_column.value(dummy_model, view_context).should == 'robert at example.com'
     end
+  end
 
-    context '.available?' do
-      it 'returns true on successful constraint' do
-        table  = Class.new(DummyTable).new([dummy_model], view_context)
-        column = TableCloth::Column.new(:name, if: :admin?)
-        column.available?(table).should be_true
-      end
+  context "human name" do
+    it "returns the label when set" do
+      column = FactoryGirl.build(:column, options: { label: "Whatever" })
+      expect(column.human_name).to eq("Whatever")
+    end
 
-      it 'returns false on failed constraints' do
-        table  = Class.new(DummyTable).new([dummy_model], view_context)
-        table.stub admin?: false
-
-
-        column = TableCloth::Column.new(:name, if: :admin?)
-        column.available?(table).should be_false
-      end
+    it "humanizes the symbol if no label is set" do
+      column = FactoryGirl.build(:column, name: :email)
+      expect(column.human_name).to eq("Email")
     end
   end
 end
