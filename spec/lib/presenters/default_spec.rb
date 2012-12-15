@@ -2,16 +2,10 @@ require 'spec_helper'
 
 describe TableCloth::Presenters::Default do
   let(:dummy_table) { Class.new(DummyTable) }
-  let(:dummy_model) do
-    DummyModel.new.tap do |d|
-      d.id    = 1
-      d.email = 'robert@example.com'
-      d.name  = 'robert'
-    end
-  end
+  let(:dummy_model) { FactoryGirl.build(:dummy_model) }
 
   let(:objects) do
-    3.times.map {|n| dummy_model.dup.tap {|dm| dm.id = n+1 } }
+    3.times.map {|n| FactoryGirl.build(:dummy_model) }
   end
 
   let(:view_context) { ActionView::Base.new }
@@ -59,7 +53,7 @@ describe TableCloth::Presenters::Default do
     let(:objects) do
       model = DummyModel.new.tap do |d|
         d.id = 1
-        d.email = 'robert@creativequeries.com'
+        d.email = 'robert@example.com'
         d.name = '<script>alert("Im in your columns, snatching your main thread.")</script>'
       end
 
@@ -143,23 +137,13 @@ describe TableCloth::Presenters::Default do
       doc.at_xpath('//td')[:class].should include 'email_column'
     end
 
-    context 'actions column' do
-      let(:dummy_table) { Class.new(DummyTableWithActions) }
-
-      specify 'actions column has a class set' do
-        doc = Nokogiri::HTML(subject.render_table)
-        td = doc.at_css('td:last')
-        td[:class].should include "actions"
-      end
-    end
-
     context 'by value of row column' do
       let(:dummy_table) { Class.new(DummyTableWithValueOptions) }
 
       specify 'column has options because of value' do
         doc = Nokogiri::HTML(subject.render_table)
         td = doc.at_xpath('//td')
-        expect(td.text).to include "robert@creativequeries.com"
+        expect(td.text).to include "robert@example.com"
         expect(td[:class]).to eq("special-class")
       end
     end

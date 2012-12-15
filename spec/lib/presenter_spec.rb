@@ -15,9 +15,9 @@ describe TableCloth::Presenter do
       expect(subject).to have(3).columns
     end
 
-    it "returns hashes of the column detail" do
+    it "returns them as columns" do
       subject.columns.each do |column|
-        expect(column).to be_kind_of Hash
+        expect(column).to be_kind_of TableCloth::Column
       end
     end
   end
@@ -28,11 +28,6 @@ describe TableCloth::Presenter do
 
     it 'returns all names' do
       subject.column_names.should =~ ["Id", "Name", "Email"]
-    end
-
-    it 'uses a name given to it' do
-      dummy_table.column :email, label: 'Email Address'
-      subject.column_names.should include 'Email Address'
     end
   end
 

@@ -15,7 +15,7 @@ module TableCloth
 
       def render_row(object)
         wrapper_tag :tr do
-          v.raw table.columns.inject('') {|tds, (key, column)| tds + render_td(column, object) }
+          v.raw columns.inject('') {|tds, column| tds + render_td(column, object) }
         end
       end
 
