@@ -16,7 +16,8 @@ describe TableCloth::Base do
     end
 
     it 'column accepts options' do
-      expect { subject.column :n, {option: 'value'} }.not_to raise_error
+      subject.column :name, option: "value"
+      expect(subject.columns[:name][:options][:option]).to eq("value")
     end
 
     it '.columns returns all columns' do
