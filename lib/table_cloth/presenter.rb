@@ -28,8 +28,14 @@ module TableCloth
 
     def columns
       @columns ||= table.class.columns.map do |name, options|
-        options[:class].new(name, options[:options])
-      end
+        column = options[:class].new(name, options[:options])
+
+        if ColumnJury.new(column, table).available?
+          column
+        else
+          nil
+        end
+      end.compact
     end
 
     def column_names
