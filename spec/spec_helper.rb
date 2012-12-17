@@ -3,6 +3,13 @@ require 'awesome_print'
 require 'nokogiri'
 require 'factory_girl'
 require 'pry'
+require 'simplecov'
+
+if ENV["COVERAGE"] == "true"
+  SimpleCov.start do
+    add_filter "spec/support"
+  end
+end
 
 Dir['./spec/support/**/*.rb'].each {|f| require f }
 
