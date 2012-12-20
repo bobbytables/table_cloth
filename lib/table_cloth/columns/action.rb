@@ -5,7 +5,7 @@ module TableCloth
         actions_html = actions.each_with_object('') do |action, links|
           if action.available?(table)
             links << "\n"
-            links << view_context.instance_exec(object, view_context, &action.options[:proc])
+            links << (view_context.instance_exec(object, view_context, &action.options[:proc]) || "")
           end
         end
 

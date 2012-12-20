@@ -151,6 +151,22 @@ describe TableCloth::Presenters::Default do
         td = doc.at_css('td:last')
         td[:class].should include "actions"
       end
+
+      context "empty actions" do
+        let(:dummy_table) do
+          Class.new(TableCloth::Base) do
+            actions do
+              action { nil }
+            end
+          end
+        end
+
+        it "changes nil to empty string" do
+          doc = Nokogiri::HTML(subject.render_table)
+          td = doc.at_css('td:last')
+          expect(td.text).to eq "\n"
+        end
+      end
     end
 
     context 'by value of row column' do
