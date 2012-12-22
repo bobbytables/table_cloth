@@ -5,5 +5,9 @@ module TableCloth::Extensions::Actions
     def initialize(options={})
       @options = options
     end
+
+    def jury
+      @jury ||= Jury.new(self)
+    end
   end
 end
