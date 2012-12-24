@@ -20,6 +20,8 @@ module TableCloth::Extensions::Actions
       when Symbol
         return !object.send(action_unless)
       end
+
+      return true
     end
 
     private
