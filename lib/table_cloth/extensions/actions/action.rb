@@ -9,5 +9,13 @@ module TableCloth::Extensions::Actions
     def jury
       @jury ||= Jury.new(self)
     end
+
+    def value(object, view)
+      if jury.available?(object)
+        view.instance_exec(object, &options[:proc])
+      else
+        ""
+      end
+    end
   end
 end
