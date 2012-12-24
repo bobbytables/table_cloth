@@ -1,5 +1,4 @@
 module TableCloth::Extensions::Actions
-
   class Jury
     attr_reader :action
 
