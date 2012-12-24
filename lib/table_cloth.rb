@@ -8,17 +8,12 @@ module TableCloth
   autoload :Configuration, 'table_cloth/configuration'
   autoload :Builder, 'table_cloth/builder'
   autoload :Column, 'table_cloth/column'
-  autoload :Action, 'table_cloth/action'
-  autoload :Actions, 'table_cloth/actions'
+  autoload :ColumnJury, 'table_cloth/column_jury'
   autoload :Presenter, 'table_cloth/presenter'
   autoload :ActionViewExtension, 'table_cloth/action_view_extension'
 
   module Presenters
     autoload :Default, 'table_cloth/presenters/default'
-  end
-
-  module Columns
-    autoload :Action, 'table_cloth/columns/action'
   end
 
   def config_for(type)

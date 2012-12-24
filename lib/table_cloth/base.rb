@@ -11,16 +11,6 @@ module TableCloth
       @view       = view
     end
 
-    def columns
-      @columns ||= self.class.columns.each_with_object({}) do |(column_name, column), columns|
-        columns[column_name] = column if column.available?(self)
-      end
-    end
-
-    def has_actions?
-      self.class.has_actions?
-    end
-
     class << self
       def presenter(klass=nil)
         return @presenter = klass if klass
@@ -40,7 +30,7 @@ module TableCloth
         column_class = options.delete(:using) || Column
 
         args.each do |name|
-          add_column name, column_class.new(name, options)
+          add_column(class: column_class, options: options, name: name)
         end
       end
 
@@ -53,22 +43,9 @@ module TableCloth
         @columns
       end
 
-      def add_column(name, column)
+      def add_column(options)
         @columns ||= {}
-        @columns[name] = column
-      end
-
-      def actions(options={}, &block)
-        if block_given?
-          actions = Actions.new(options, &block)
-          columns[:actions] = actions.column
-        end
-
-        columns[:actions].actions
-      end
-
-      def has_actions?
-        columns[:actions].present?
+        @columns[options[:name]] = options
       end
     end
   end

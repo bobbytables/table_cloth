@@ -1,12 +1,12 @@
 module TableCloth
-  class Action
-    attr_reader :action, :options
-    
-    def initialize(options)
-      @options = options
+  class ColumnJury
+    attr_reader :column, :table
+
+    def initialize(column, table)
+      @column, @table = column, table
     end
 
-    def available?(table)
+    def available?
       if options[:if] && options[:if].is_a?(Symbol)
         return !!table.send(options[:if])
       end
@@ -16,6 +16,10 @@ module TableCloth
       end
 
       true
+    end
+
+    def options
+      column.options
     end
   end
 end

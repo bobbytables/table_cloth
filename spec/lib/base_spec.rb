@@ -16,7 +16,8 @@ describe TableCloth::Base do
     end
 
     it 'column accepts options' do
-      expect { subject.column :n, {option: 'value'} }.not_to raise_error
+      subject.column :name, option: "value"
+      expect(subject.columns[:name][:options][:option]).to eq("value")
     end
 
     it '.columns returns all columns' do
@@ -33,22 +34,16 @@ describe TableCloth::Base do
       subject.column(:name) { 'Wee' }
 
       column = subject.columns[:name]
-      expect(column.options[:proc]).to be_present
-      expect(column.options[:proc]).to be_kind_of(Proc)
+      expect(column[:options][:proc]).to be_present
+      expect(column[:options][:proc]).to be_kind_of(Proc)
     end
 
     context "custom" do
-      let(:custom_column) do
-        Class.new(TableCloth::Column) do
-          def value(object, view)
-            "AN EMAIL!"
-          end
-        end
-      end
+      let(:custom_column) { stub(:custom, value: "AN EMAIL") }
 
       it '.column can take a custom column' do
         subject.column :email, using: custom_column
-        subject.columns[:email].value(dummy_model, view_context).should == "AN EMAIL!"
+        expect(subject.columns[:email][:class]).to eq(custom_column)
       end
     end
   end
@@ -56,17 +51,6 @@ describe TableCloth::Base do
   context 'presenters' do
     it 'has a presenter method' do
       subject.should respond_to :presenter
-    end
-  end
-
-  context 'actions' do
-    it "takes a block" do
-      subject.actions do
-        action { 'Edit' }
-        action { 'Delete' }
-      end
-
-      expect(subject.columns[:actions]).to be_kind_of TableCloth::Columns::Action
     end
   end
 

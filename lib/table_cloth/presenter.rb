@@ -4,13 +4,12 @@ module TableCloth
       :table
 
     def initialize(objects, table, view)
-      @view_context = view
-      @table_definition = table
       @objects = objects
+      @table_definition = table
+      @view_context = view
       @table = table_definition.new(objects, view)
     end
 
-    # Short hand so your fingers don't hurt
     def v
       view_context
     end
@@ -27,14 +26,26 @@ module TableCloth
       raise NoMethodError, "You must override the .rows method"
     end
 
+    def columns
+      @columns ||= table.class.columns.map do |name, options|
+        column = options[:class].new(name, options[:options])
+
+        if ColumnJury.new(column, table).available?
+          column
+        else
+          nil
+        end
+      end.compact
+    end
+
     def column_names
-      @column_names ||= table.columns.each_with_object([]) do |(column_name, column), names|
+      @column_names ||= columns.each_with_object([]) do |column, names|
         names << column.human_name
       end
     end
 
     def row_values(object)
-      table.columns.each_with_object([]) do |(key, column), values|
+      columns.each_with_object([]) do |column, values|
         values << column.value(object, view_context, table)
       end
     end
