@@ -8,6 +8,11 @@ describe TableCloth::Extensions::Actions::ActionCollection do
       subject.action { }
       expect(subject).to have(1).actions
     end
+
+    it "adds an action with options" do
+      subject.action(option: "something") { }
+      expect(subject.actions.first.options[:option]).to eq("something")
+    end
   end
 
   context "#actions" do

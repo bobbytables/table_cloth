@@ -4,8 +4,8 @@ module TableCloth::Extensions::Actions
       @actions ||= []
     end
 
-    def action(&block)
-      actions << Action.new(proc: block)
+    def action(options={}, &block)
+      actions << Action.new({proc: block}.merge(options))
     end
   end
 end
