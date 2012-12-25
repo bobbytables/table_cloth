@@ -1,4 +1,7 @@
 class <%= class_name %>Table < TableCloth::Base
+  # To include actions on this table, uncomment this line
+  # include TableCloth::Extensions::Actions
+
   # Define columns with the #column method
   # column :name, :email
 
@@ -22,8 +25,12 @@ class <%= class_name %>Table < TableCloth::Base
   # Actions give you the ability to create a column for any actions you'd like to provide.
   # Pass a block with an arity of 2, (object, view context).
   # You can add as many actions as you want.
+  # Make sure you include the actions extension.
   #
   # actions do
   #   action {|object| link_to "Edit", edit_object_path(object) }
+  #   action(if: :valid?) {|object| link_to "Invalidate", invalidate_object_path(object) }
   # end
+  # 
+  # If action provides an "if:" option, it will call that method on the object. It can also take a block with an arity of 1.
 end
