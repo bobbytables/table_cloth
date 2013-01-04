@@ -57,17 +57,46 @@ describe TableCloth::Presenter do
     expect(subject.rows).to eq(expected)
   end
 
-  context 'tags' do
-    it '.wrapper_tag includes config for a tag in block form' do
-      TableCloth::Configuration.table.should_receive(:to_hash).once.and_return(class: "stuff")
-      table = subject.wrapper_tag(:table) { "Hello "}
-      Nokogiri::HTML(table).at_xpath('//table')[:class].should == 'stuff'
+  context '.wrapper_tag' do
+    it "creates a tag with a block" do
+      table = subject.wrapper_tag(:table) { "Hello" }
+      element = to_element(table, "table")
+      expect(element).to be_present
+      expect(element.text).to eq("Hello")
     end
 
-    it '.wrapper_tag includes config for a tag without a block' do
-      TableCloth::Configuration.table.should_receive(:to_hash).once.and_return(class: "stuff")
-      table = subject.wrapper_tag(:table, 'Hello')
-      Nokogiri::HTML(table).at_xpath('//table')[:class].should == 'stuff'
+    it "creates a tag without a block" do
+      table = subject.wrapper_tag(:table, "Hello")
+      element = to_element(table, "table")
+      expect(element).to be_present
+      expect(element.text).to eq("Hello")
+    end
+
+    context "config" do
+      let(:config) { double("config", config_for: { class: "table_class" }) }
+
+      it "inherits options from global config" do
+        TableCloth.config.stub config_for: {class: "global_class"}
+        tag = subject.wrapper_tag(:table, "Hello")
+        element = to_element(tag, "table")
+
+        expect(element[:class]).to eq("global_class")
+      end
+
+      it "includes config sent to it" do
+        tag = subject.wrapper_tag(:table, "Hello", {class: "passed_class"})
+        element = to_element(tag, "table")
+
+        expect(element[:class]).to eq("passed_class")
+      end
+
+      it "includes config from the table instance" do
+        dummy_table.stub config: config
+        tag = subject.wrapper_tag(:table, "Hello", {class: "passed_class"})
+        element = to_element(tag, "table")
+
+        expect(element[:class]).to eq("table_class")
+      end
     end
   end
 end
