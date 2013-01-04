@@ -1,20 +1,24 @@
 module TableCloth
   class Configuration
-    include ConfigurableElements
+    OPTIONS = %w(table thead th tbody tr td).map(&:to_sym)
+
+    OPTIONS.each do |option|
+      class_eval <<-OPTION, __FILE__, __LINE__+1
+        def #{option}
+          @#{option}_option ||= ActiveSupport::OrderedOptions.new
+        end
+      OPTION
+    end
 
     class << self
       def configure(&block)
         block.arity > 0 ? block.call(self) : yield
       end
-
-      def config_for(type)
-        self.send(type).to_hash
-      end
-      alias [] config_for
     end
 
-    def [](key)
-      self.send(key)
+    def config_for(type)
+      send(type).to_hash
     end
+    alias [] config_for
   end
 end

@@ -1,23 +1,12 @@
 require 'spec_helper'
 
 describe TableCloth::Configuration do
-  subject { Class.new(TableCloth::Configuration) }
+  subject { TableCloth::Configuration.new }
+  let(:options) { TableCloth::Configuration::OPTIONS }
 
-  context "options" do
-    TableCloth::Configuration::OPTIONS.each do |option|
-      it "configures #{option} options" do
-        subject.send(option).classes = "option_value"
-        expect(subject.send(option).classes).to eq("option_value")
-      end
-    end
-  end
-
-  context "[] accessor" do
-    let(:option) { TableCloth::Configuration::OPTIONS.first }
-
-    it "returns the option" do
-      subject.send(option).classes = "something"
-      expect(subject.new[option].classes).to eq("something")
+  it "has accessors for all options" do
+    options.each do |option|
+      expect(subject).to respond_to option
     end
   end
 end
