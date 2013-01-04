@@ -6,7 +6,7 @@ module TableCloth
 
     included do
       OPTIONS.each do |option|
-        cattr_accessor option
+        class_attribute option
         self.send "#{option}=", ActiveSupport::OrderedOptions.new
       end
     end

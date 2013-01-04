@@ -3,33 +3,21 @@ require 'spec_helper'
 describe TableCloth::Configuration do
   subject { Class.new(TableCloth::Configuration) }
 
-  it 'configures table options' do
-    subject.table.classes = 'table'
-    subject.table.classes.should == 'table'
+  context "options" do
+    TableCloth::Configuration::OPTIONS.each do |option|
+      it "configures #{option} options" do
+        subject.send(option).classes = "option_value"
+        expect(subject.send(option).classes).to eq("option_value")
+      end
+    end
   end
 
-  it 'configures thead options' do
-    subject.thead.classes = 'thead'
-    subject.thead.classes.should == 'thead'
-  end
+  context "[] accessor" do
+    let(:option) { TableCloth::Configuration::OPTIONS.first }
 
-  it 'configures th options' do
-    subject.th.classes = 'th'
-    subject.th.classes.should == 'th'
-  end
-
-  it 'configures tbody options' do
-    subject.tbody.classes = 'tbody'
-    subject.tbody.classes.should == 'tbody'
-  end
-
-  it 'configures tr options' do
-    subject.tr.classes = 'tr'
-    subject.tr.classes.should == 'tr'
-  end
-
-  it 'configures td options' do
-    subject.td.classes = 'td'
-    subject.td.classes.should == 'td'
+    it "returns the option" do
+      subject.send(option).classes = "something"
+      expect(subject.new[option].classes).to eq("something")
+    end
   end
 end
