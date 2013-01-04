@@ -51,7 +51,7 @@ module TableCloth
       end
 
       def config
-        @config ||= TableCloth::Configuration.new
+        @config ||= Configuration.new
       end
     end
   end
