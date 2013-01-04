@@ -3,12 +3,14 @@ module TableCloth
     NoPresenterError = Class.new(Exception)
 
     attr_reader :collection, :view
-    class_attribute :config, instance_accessor: false
-    self.config = Class.new { include ConfigurableElements }
 
     def initialize(collection, view)
       @collection = collection
       @view       = view
+    end
+
+    def config
+      self.class.config
     end
 
     class << self
@@ -46,6 +48,10 @@ module TableCloth
       def add_column(options)
         @columns ||= {}
         @columns[options[:name]] = options
+      end
+
+      def config
+        @config ||= TableCloth::Configuration.new
       end
     end
   end

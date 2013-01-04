@@ -48,6 +48,18 @@ describe TableCloth::Base do
     end
   end
 
+  context ".config" do
+    it "returns a configurable class" do
+      expect(subject.config).to be_kind_of TableCloth::Configuration
+    end
+
+    context "for an instance" do
+      it "returns a configurable class" do
+        expect(table_instance.config).to be_kind_of TableCloth::Configuration
+      end
+    end
+  end
+
   context 'presenters' do
     it 'has a presenter method' do
       subject.should respond_to :presenter
