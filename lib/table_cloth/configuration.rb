@@ -12,7 +12,7 @@ module TableCloth
 
     class << self
       def configure(&block)
-        block.arity > 0 ? block.call(self) : yield
+        yield TableCloth.config
       end
     end
 
