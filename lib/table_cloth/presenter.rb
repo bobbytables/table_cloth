@@ -10,10 +10,6 @@ module TableCloth
       @table = table_definition.new(objects, view)
     end
 
-    def v
-      view_context
-    end
-
     def render_table
       raise NoMethodError, "You must override the .render method"
     end
@@ -70,10 +66,20 @@ module TableCloth
 
     def tag_options(type, options={})
       options = options.dup
-      options.merge!(table.config.config_for(type))
-      options.merge!(TableCloth.config.config_for(type))
+      if TableCloth.config.respond_to?(type)
+        options.merge!(table.config.config_for(type))
+        options.merge!(TableCloth.config.config_for(type))
+      end
 
       options
+    end
+
+    def v
+      view_context
+    end
+
+    def params
+      v.params
     end
   end
 end

@@ -14,6 +14,7 @@ module TableCloth
 
   module Presenters
     autoload :Default, "table_cloth/presenters/default"
+    autoload :Sortable, "table_cloth/presenters/sortable"
   end
 
   module Extensions
