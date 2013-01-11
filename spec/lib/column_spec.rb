@@ -25,12 +25,17 @@ describe TableCloth::Column do
   context "human name" do
     it "returns the label when set" do
       column = FactoryGirl.build(:column, options: { label: "Whatever" })
-      expect(column.human_name).to eq("Whatever")
+      expect(column.human_name(view_context)).to eq("Whatever")
     end
 
     it "humanizes the symbol if no label is set" do
       column = FactoryGirl.build(:column, name: :email)
-      expect(column.human_name).to eq("Email")
+      expect(column.human_name(view_context)).to eq("Email")
+    end
+
+    it "runs with a proc" do
+      column = FactoryGirl.build(:column, options: { label: Proc.new{ tag :span }} )
+      expect(column.human_name(view_context)).to eq("<span />")
     end
   end
 end

@@ -15,8 +15,12 @@ module TableCloth
       end
     end
 
-    def human_name
-      options[:label] || name.to_s.humanize
+    def human_name(view)
+      if options[:label].kind_of? Proc
+        view.instance_exec(&options[:label])
+      else
+        options[:label] || name.to_s.humanize
+      end
     end
   end
 end

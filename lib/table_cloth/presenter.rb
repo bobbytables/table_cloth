@@ -36,7 +36,7 @@ module TableCloth
 
     def column_names
       @column_names ||= columns.each_with_object([]) do |column, names|
-        names << column.human_name
+        names << column.human_name(view_context)
       end
     end
 
