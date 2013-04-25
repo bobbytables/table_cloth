@@ -17,7 +17,11 @@ module TableCloth
         private
 
         def action_collection
-          @action_collection ||= ActionCollection.new
+          @action_collection ||= if superclass.respond_to? :action_collection
+            superclass.action_collection.dup
+          else
+            ActionCollection.new
+          end
         end
       end
     end
