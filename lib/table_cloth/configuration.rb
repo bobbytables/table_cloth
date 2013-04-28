@@ -1,8 +1,8 @@
 module TableCloth
   class Configuration
-    OPTIONS = %w(table thead th tbody tr td).map(&:to_sym)
+    ELEMENT_OPTIONS = %w(table thead th tbody tr td).map(&:to_sym)
 
-    OPTIONS.each do |option|
+    ELEMENT_OPTIONS.each do |option|
       class_eval <<-OPTION, __FILE__, __LINE__+1
         def #{option}
           @#{option}_option ||= ActiveSupport::OrderedOptions.new
