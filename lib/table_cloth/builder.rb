@@ -19,9 +19,6 @@ module TableCloth
       end
     end
 
-    def initialize
-    end
-
     def to_s
       presenter.render_table
     end
