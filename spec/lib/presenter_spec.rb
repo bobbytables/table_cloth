@@ -4,11 +4,8 @@ describe TableCloth::Presenter do
   subject { TableCloth::Presenter.new(objects, dummy_table, view_context) }
   let(:dummy_table) { Class.new(DummyTable) }
   let(:dummy_model) { FactoryGirl.build(:dummy_model) }
-
   let(:objects) { 3.times.map { FactoryGirl.build(:dummy_model) } }
-
   let(:view_context) { ActionView::Base.new }
-  subject { TableCloth::Presenter.new(objects, dummy_table, view_context) }
 
   context ".columns" do
     it "returns all columns from the table" do
@@ -24,7 +21,7 @@ describe TableCloth::Presenter do
     context "that are unavaialble" do
       let(:dummy_table) { FactoryGirl.build(:dummy_table, email: {if: :admin?}) }
       let(:table_instance) { dummy_table.new(objects, view_context) }
-      before(:each) do 
+      before(:each) do
         table_instance.stub admin?: false
         subject.stub table: table_instance
       end
@@ -44,14 +41,14 @@ describe TableCloth::Presenter do
     before(:each) { table_instance.stub admin?: false, awesome?: true }
 
     it 'returns all names' do
-      subject.column_names.should == ["Id", "Name", "Email"]
+      expect(subject.column_names).to eq ["Id", "Name", "Email"]
     end
   end
 
   it 'returns all values for a row' do
-    subject.row_values(dummy_model).should == [dummy_model.id, dummy_model.name, dummy_model.email]
+    expect(subject.row_values(dummy_model)).to eq [dummy_model.id, dummy_model.name, dummy_model.email]
   end
-  
+
   it 'generates the values for all of the rows' do
     expected = objects.map {|o| [o.id, o.name, o.email] }
     expect(subject.rows).to eq(expected)
