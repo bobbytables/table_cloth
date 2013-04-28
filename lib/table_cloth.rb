@@ -28,6 +28,9 @@ module TableCloth
   end
 end
 
-TableCloth::Base.presenter ::TableCloth::Presenters::Default
+# Set the default presenter
+TableCloth::Base.presenter(TableCloth::Presenters::Default)
 
-ActionView::Base.send(:include, TableCloth::ActionViewExtension)
+ActiveSupport.on_load(:action_view) do
+  include TableCloth::ActionViewExtension
+end
