@@ -58,6 +58,17 @@ describe TableCloth::Base do
         expect(table_instance.config).to be_kind_of TableCloth::Configuration
       end
     end
+
+    context "inheritance" do
+      let(:parent_class) { Class.new(TableCloth::Base) }
+      let(:child_class) { Class.new(parent_class) }
+
+      before { parent_class.config.table.class = "inherit-me" }
+
+      it "inherits from a parent class's configuration" do
+        expect(child_class.config.table[:class]).to eq "inherit-me"
+      end
+    end
   end
 
   context 'presenters' do

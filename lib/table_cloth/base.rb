@@ -51,7 +51,11 @@ module TableCloth
       end
 
       def config
-        @config ||= Configuration.new
+        @config ||= if superclass.respond_to?(:config)
+          superclass.config.dup
+        else
+          Configuration.new
+        end
       end
     end
   end
