@@ -9,13 +9,13 @@ module TableCloth
 
       def render_rows
         wrapper_tag :tbody do
-          v.raw objects.inject('') {|r, object| r + render_row(object) }
+          v.raw objects.inject("") {|r, object| r + render_row(object) }
         end
       end
 
       def render_row(object)
         wrapper_tag :tr do
-          v.raw columns.inject('') {|tds, column| tds + render_td(column, object) }
+          v.raw columns.inject("") {|tds, column| tds + render_td(column, object) }
         end
       end
 
@@ -36,7 +36,7 @@ module TableCloth
       def render_header
         wrapper_tag :thead do
           wrapper_tag :tr do
-            v.raw column_names.inject('') {|tags, name| tags + wrapper_tag(:th, name) }
+            v.raw column_names.inject("") {|tags, name| tags + wrapper_tag(:th, name) }
           end
         end
       end
