@@ -1,7 +1,9 @@
 # Table Cloth
 
 Table Cloth gives you an easy to use DSL for creating and rendering tables in rails.
-It's new, so if you want a feature or have an improvement? Make an issue!
+
+The primary goal of Table Cloth is to remove the complexity that usually comes with making tables with dynamic content.
+HTML Tables frequently can get out of hand when you start to add conditionals, removing columns, etc..
 
 Follow me! [@robertoross](http://twitter.com/robertoross)
 
@@ -147,7 +149,7 @@ class UserTable < TableCloth::Base
   actions do
     action {|object| link_to "Edit", edit_object_path(object) }
   end
-  
+
   config.table.class = ''
   config.thead.class = ''
   config.th.class    = ''
@@ -192,7 +194,6 @@ This would render something alow the lines of:
 ## Thanks
 
 - TableCloth was built during my open source time at [philosophie](http://gophilosophie.com)
-- simple_form for the idea of ```simple_table_for```
 
 ## Contributing
 
