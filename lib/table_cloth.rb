@@ -1,7 +1,6 @@
 require "action_view"
 require "active_support/core_ext/class"
 require "table_cloth/version"
-require "table_cloth/configurable_elements"
 
 module TableCloth
   autoload :Base, "table_cloth/base"
