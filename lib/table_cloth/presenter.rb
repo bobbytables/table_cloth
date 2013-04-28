@@ -1,13 +1,11 @@
 module TableCloth
   class Presenter
-    attr_reader :view_context, :table_definition, :objects,
-      :table
+    attr_reader :view_context, :objects, :table
 
     def initialize(objects, table, view)
       @objects = objects
-      @table_definition = table
       @view_context = view
-      @table = table_definition.new(objects, view)
+      @table = table.new(objects, view)
     end
 
     def render_table
@@ -23,14 +21,9 @@ module TableCloth
     end
 
     def columns
-      @columns ||= table.class.columns.map do |name, options|
-        column = options[:class].new(name, options[:options])
-
-        if ColumnJury.new(column, table).available?
-          column
-        else
-          nil
-        end
+      @columns ||= table.class.columns.map do |name, column_hash|
+        column = column_hash[:class].new(name, column_hash[:options])
+        ColumnJury.new(column, table).available? ? column : nil
       end.compact
     end
 
@@ -55,10 +48,10 @@ module TableCloth
     def wrapper_tag(type, value=nil, options={}, &block)
       options = tag_options(type, options)
 
-      content = if block_given?
-        v.content_tag(type, options, &block)
+      if block_given?
+        view_context.content_tag(type, options, &block)
       else
-        v.content_tag(type, value, options)
+        view_context.content_tag(type, value, options)
       end
     end
 
