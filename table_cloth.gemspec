@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = TableCloth::VERSION
   gem.authors       = ["Robert Ross"]
   gem.email         = ["robert@creativequeries.com"]
-  gem.description   = %q{Table Cloth helps you create a table easily.}
-  gem.summary       = %q{Table Cloth provides an easy and intuitive DSL for creating tables in rails views.}
+  gem.description   = %q{Table Cloth helps you create tables easily.}
+  gem.summary       = %q{Table Cloth provides an easy and intuitive DSL for creating tables for Rails views.}
   gem.homepage      = "http://www.github.com/bobbytables/table_cloth"
 
   gem.files         = `git ls-files`.split($/)
