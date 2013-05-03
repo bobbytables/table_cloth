@@ -28,4 +28,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency('rb-fsevent', '~> 0.9.1')
 
   gem.add_dependency('actionpack', '>= 3.1', '< 4.1')
+  gem.add_dependency('element_factory', '~> 0.1.0')
 end
