@@ -2,24 +2,43 @@ module TableCloth
   module Presenters
     class Default < ::TableCloth::Presenter
       def render_table
-        wrapper_tag :table do
-          render_header + render_rows
+        @render_table ||= ElementFactory::Element.new(:table, tag_options(:table)).tap do |table|
+          table << thead
+          table << tbody
         end
       end
 
-      def render_rows
-        wrapper_tag :tbody do
-          v.raw objects.inject("") {|r, object| r + render_row(object) }
+      def thead
+        @thead ||= ElementFactory::Element.new(:thead, tag_options(:thead)).tap do |thead|
+          thead << thead_row
         end
       end
 
-      def render_row(object)
-        wrapper_tag :tr do
-          v.raw columns.inject("") {|tds, column| tds + render_td(column, object) }
+      def tbody
+        @tbody ||= ElementFactory::Element.new(:tbody, tag_options(:tbody)).tap do |tbody|
+          objects.each {|object| tbody << row_for_object(object) }
         end
       end
 
-      def render_td(column, object)
+      private
+
+      def thead_row
+        @thead_row ||= ElementFactory::Element.new(:tr, tag_options(:tr)).tap do |row|
+          column_names.each do |name|
+            row << ElementFactory::Element.new(:th, tag_options(:th).merge(text: name))
+          end
+        end
+      end
+
+      def row_for_object(object)
+        ElementFactory::Element.new(:tr, tag_options(:tr)).tap do |row|
+          columns.each do |column|
+            row << column_for_object(column, object)
+          end
+        end
+      end
+
+      def column_for_object(column, object)
         td_options = column.options[:td_options] || {}
         value = column.value(object, view_context, table)
 
@@ -30,15 +49,9 @@ module TableCloth
           td_options.update(options)
         end
 
-        wrapper_tag(:td, value, td_options)
-      end
+        td_options[:text] = value
 
-      def render_header
-        wrapper_tag :thead do
-          wrapper_tag :tr do
-            v.raw column_names.inject("") {|tags, name| tags + wrapper_tag(:th, name) }
-          end
-        end
+        ElementFactory::Element.new(:td, tag_options(:td).merge(td_options))
       end
     end
   end
