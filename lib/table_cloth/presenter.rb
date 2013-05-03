@@ -45,16 +45,6 @@ module TableCloth
       end
     end
 
-    def wrapper_tag(type, value=nil, options={}, &block)
-      options = tag_options(type, options)
-
-      if block_given?
-        view_context.content_tag(type, options, &block)
-      else
-        view_context.content_tag(type, value, options)
-      end
-    end
-
     private
 
     def tag_options(type, options={})
