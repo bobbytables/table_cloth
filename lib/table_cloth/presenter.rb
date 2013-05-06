@@ -12,11 +12,11 @@ module TableCloth
       raise NoMethodError, "You must override the .render method"
     end
 
-    def render_header
+    def thead
       raise NoMethodError, "You must override the .header method"
     end
 
-    def render_rows
+    def tbody
       raise NoMethodError, "You must override the .rows method"
     end
 
