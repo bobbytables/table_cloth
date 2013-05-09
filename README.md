@@ -13,7 +13,9 @@ Follow me! [@robertoross](http://twitter.com/robertoross)
 
 Add this line to your application's Gemfile:
 
-    gem 'table_cloth'
+```ruby
+gem 'table_cloth'
+```
 
 And then execute:
 
@@ -31,7 +33,7 @@ $ rails g table User
 
 It will make this:
 
-```
+```ruby
 class UserTable < TableCloth::Base
   # Define columns with the #column method
   # column :name, :email
@@ -66,14 +68,14 @@ end
 Go ahead and modify it to suit your needs, pick the columns, conditions, actions, etc...
 
 In your view, you would then use this code:
-```
+
+```erb
 <%= simple_table_for @users, with: UserTable %>
-
 ```
 
-The second approach to making tables with Table Cloth is in the view.
+Or if you want more customization:
 
-```
+```erb
 <%= simple_table_for @users do |t| %>
   <% t.column :name %>
   <% t.column :email %>
@@ -95,8 +97,9 @@ class ImageColumn < TableCloth::Column
 end
 ```
 
-In your table
-```
+In your table:
+
+```erb
 <%= simple_table_for @users do |table| %>
   <% table.column :name %>
   <% table.column :image, using: ImageColumn %>
@@ -105,9 +108,9 @@ In your table
 
 ## Actions
 
-A lot of tables have an actions column to give you the full CRUD effect. They can be painful but Table Cloth incorporates a way to easily add them to your definition.
+A lot of tables have an actions column to give you the full CRUD effect. They can be painful but Table Cloth incorporates a way to easily add them to your definition:
 
-```
+```ruby
 class UserTable < TableCloth::Base
   column :name
 
@@ -127,7 +130,7 @@ end
 
 Create an initializer called ```table_cloth.rb```
 
-Configuration looks like this:
+It should look like this:
 
 ```ruby
 TableCloth::Configuration.configure do |config|
@@ -140,7 +143,7 @@ TableCloth::Configuration.configure do |config|
 end
 ```
 
-You can also configure specific tables separately.
+You can also configure specific tables separately:
 
 ```ruby
 class UserTable < TableCloth::Base
@@ -182,7 +185,6 @@ class UserTable < TableCloth::Base
     [user.name, {class: "#{user.type}-user"}]
   end
 end
-
 ```
 
 This would render something alow the lines of:
