@@ -49,7 +49,11 @@ module TableCloth
           td_options.update(options)
         end
 
-        td_options[:text] = value
+        if value.html_safe?
+          td_options[:inner_html] = value
+        else
+          td_options[:text] = value
+        end
 
         ElementFactory::Element.new(:td, tag_options(:td).merge(td_options))
       end
