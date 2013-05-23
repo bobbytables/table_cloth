@@ -15,7 +15,6 @@ describe 'Action View Extension' do
       table.column :name, :email
     end
 
-    doc = Nokogiri::HTML(table)
-    expect(doc.at_xpath('//table')).to be_present
+    expect(table).to have_tag "table"
   end
 end

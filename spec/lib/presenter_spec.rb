@@ -53,47 +53,4 @@ describe TableCloth::Presenter do
     expected = objects.map {|o| [o.id, o.name, o.email] }
     expect(subject.rows).to eq(expected)
   end
-
-  context '.wrapper_tag' do
-    it "creates a tag with a block" do
-      table = subject.wrapper_tag(:table) { "Hello" }
-      element = to_element(table, "table")
-      expect(element).to be_present
-      expect(element.text).to eq("Hello")
-    end
-
-    it "creates a tag without a block" do
-      table = subject.wrapper_tag(:table, "Hello")
-      element = to_element(table, "table")
-      expect(element).to be_present
-      expect(element.text).to eq("Hello")
-    end
-
-    context "config" do
-      let(:config) { double("config", config_for: { class: "table_class" }) }
-
-      it "inherits options from global config" do
-        TableCloth.config.stub config_for: {class: "global_class"}
-        tag = subject.wrapper_tag(:table, "Hello")
-        element = to_element(tag, "table")
-
-        expect(element[:class]).to eq("global_class")
-      end
-
-      it "includes config sent to it" do
-        tag = subject.wrapper_tag(:table, "Hello", {class: "passed_class"})
-        element = to_element(tag, "table")
-
-        expect(element[:class]).to eq("passed_class")
-      end
-
-      it "includes config from the table instance" do
-        dummy_table.stub config: config
-        tag = subject.wrapper_tag(:table, "Hello", {class: "passed_class"})
-        element = to_element(tag, "table")
-
-        expect(element[:class]).to eq("table_class")
-      end
-    end
-  end
 end
