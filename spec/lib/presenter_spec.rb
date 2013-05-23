@@ -72,27 +72,31 @@ describe TableCloth::Presenter do
     context "config" do
       let(:config) { double("config", config_for: { class: "table_class" }) }
 
-      it "inherits options from global config" do
+      before do
         TableCloth.config.stub config_for: {class: "global_class"}
+      end
+
+      it "inherits options from global config" do
         tag = subject.wrapper_tag(:table, "Hello")
         element = to_element(tag, "table")
 
         expect(element[:class]).to eq("global_class")
       end
 
-      it "includes config sent to it" do
-        tag = subject.wrapper_tag(:table, "Hello", {class: "passed_class"})
+      it "includes config from the table instance" do
+        dummy_table.stub config: config
+        tag = subject.wrapper_tag(:table, "Hello")
         element = to_element(tag, "table")
 
-        expect(element[:class]).to eq("passed_class")
+        expect(element[:class]).to eq("table_class")
       end
 
-      it "includes config from the table instance" do
+      it "includes config sent to it" do
         dummy_table.stub config: config
         tag = subject.wrapper_tag(:table, "Hello", {class: "passed_class"})
         element = to_element(tag, "table")
 
-        expect(element[:class]).to eq("table_class")
+        expect(element[:class]).to eq("passed_class")
       end
     end
   end
