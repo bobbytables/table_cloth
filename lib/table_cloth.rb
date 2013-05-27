@@ -1,4 +1,5 @@
 require "action_view"
+require "element_factory"
 require "active_support/core_ext/class"
 require "table_cloth/version"
 

@@ -12,11 +12,11 @@ module TableCloth
       raise NoMethodError, "You must override the .render method"
     end
 
-    def render_header
+    def thead
       raise NoMethodError, "You must override the .header method"
     end
 
-    def render_rows
+    def tbody
       raise NoMethodError, "You must override the .rows method"
     end
 
@@ -42,16 +42,6 @@ module TableCloth
     def rows
       objects.each_with_object([]) do |object, row|
         row << row_values(object)
-      end
-    end
-
-    def wrapper_tag(type, value=nil, options={}, &block)
-      options = tag_options(type, options)
-
-      if block_given?
-        view_context.content_tag(type, options, &block)
-      else
-        view_context.content_tag(type, value, options)
       end
     end
 
