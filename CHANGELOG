@@ -1,0 +1,5 @@
+Unfortunately I'm not used to making a changelog, this changelog starts at v0.4.0.
+
+* v0.4.0
+
+Change how the default presenter renders tables using ElementFactory. (https://github.com/bobbytables/element_factory)
