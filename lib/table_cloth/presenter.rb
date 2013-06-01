@@ -49,9 +49,10 @@ module TableCloth
 
     def tag_options(type, options={})
       options = options.dup
+
       if TableCloth.config.respond_to?(type)
-        options.merge!(table.config.config_for(type))
-        options.merge!(TableCloth.config.config_for(type))
+        options = table.config.config_for(type).merge(options)
+        options = TableCloth.config.config_for(type).merge(options)
       end
 
       options
