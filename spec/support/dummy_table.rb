@@ -1,5 +1,5 @@
 class DummyTable < TableCloth::Base
-  column :id
+  column :id, th_options: {class: "th_options_class"}
   column :name
   column :email
 end

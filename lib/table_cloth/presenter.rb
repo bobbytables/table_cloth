@@ -27,12 +27,6 @@ module TableCloth
       end.compact
     end
 
-    def column_names
-      @column_names ||= columns.each_with_object([]) do |column, names|
-        names << column.human_name(view_context)
-      end
-    end
-
     def row_values(object)
       columns.each_with_object([]) do |column, values|
         values << column.value(object, view_context, table)
