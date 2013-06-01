@@ -12,25 +12,24 @@ describe TableCloth::Presenters::Default do
   subject { TableCloth::Presenters::Default.new(objects, dummy_table, view_context) }
 
   describe "#thead" do
-    let(:column_names) { ["Col1", "Col2"] }
     let(:thead) { Nokogiri::HTML(subject.thead.to_s) }
-
-    before(:each) do
-      subject.stub column_names: column_names
-    end
 
     it "creates a thead" do
       expect(thead).to have_tag "thead"
     end
 
     it "creates th's" do
-      expect(thead.css("th").size).to be 2
+      expect(thead.css("th").size).to be subject.columns.size
     end
 
     it "creates th's with the correct text" do
       thead.css("th").each_with_index do |th, i|
-        expect(th.text).to eq(column_names[i])
+        expect(th.text).to eq(subject.columns[i].human_name(view_context))
       end
+    end
+
+    it "creates th's with the correct options" do
+      thead.at_css("th").attr(:class).should == "th_options_class"
     end
   end
 

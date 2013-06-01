@@ -29,19 +29,6 @@ describe TableCloth::Presenter do
       specify "are not returned" do
         expect(subject).to have(0).columns
       end
-
-      specify "name is not returned" do
-        expect(subject.column_names).not_to include "email"
-      end
-    end
-  end
-
-  context ".column_names" do
-    let(:table_instance) { dummy_table.new(objects, view_context) }
-    before(:each) { table_instance.stub admin?: false, awesome?: true }
-
-    it 'returns all names' do
-      expect(subject.column_names).to eq ["Id", "Name", "Email"]
     end
   end
 

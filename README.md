@@ -177,6 +177,8 @@ class UserTable < TableCloth::Base
 end
 ```
 
+Table header (```th```) elements can be configured in a similar fashion with the ```th_options``` key.
+
 Not good enough? Fine... you can do row / column specific config as well for a TD.
 
 ```ruby
