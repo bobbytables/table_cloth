@@ -24,8 +24,10 @@ module TableCloth
 
       def thead_row
         @thead_row ||= ElementFactory::Element.new(:tr, tag_options(:tr)).tap do |row|
-          column_names.each do |name|
-            row << ElementFactory::Element.new(:th, tag_options(:th).merge(text: name))
+          columns.each do |column|
+            th_options = column.options[:th_options] || {}
+            name = column.human_name(view_context)
+            row << ElementFactory::Element.new(:th, tag_options(:th, th_options).merge(text: name))
           end
         end
       end
