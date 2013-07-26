@@ -25,6 +25,7 @@ And then execute:
 
 Table Cloth can use defined tables in app/tables or you can build them on the fly.
 
+
 Table models can be generated using rails generators.
 
 ```
