@@ -1,7 +1,4 @@
 class <%= class_name %>Table < TableCloth::Base
-  # To include actions on this table, uncomment this line
-  # include TableCloth::Extensions::Actions
-
   # Define columns with the #column method
   # column :name, :email
 
