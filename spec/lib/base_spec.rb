@@ -90,4 +90,10 @@ describe TableCloth::Base do
       expect { sibling1_class.config.table.cellpadding = '0' }.not_to change { sibling2_class.config.table.cellpadding }
     end
   end
+
+  describe '.actions' do
+    it 'exists in class' do
+      expect(subject).to respond_to(:actions)
+    end
+  end
 end
