@@ -1,5 +1,7 @@
 module TableCloth
   class Base
+    include TableCloth::Extensions::Actions
+
     NoPresenterError = Class.new(Exception)
 
     attr_reader :collection, :view
