@@ -66,5 +66,20 @@ describe TableCloth::Presenters::Default do
         end
       end
     end
+
+    context 'html_safe cell content with td_options' do
+      let(:objects) do
+        list = FactoryGirl.build_list(:dummy_model, 3, :name => nil)
+        list.first.name = 'robert'
+        list
+      end
+      let(:dummy_table) { Class.new(DummyTableWithHTMLSafe) }
+
+      it 'only outputs html_safe content in the correct column' do
+        tbody = Nokogiri::HTML(subject.tbody.to_s).at_xpath('//tbody')
+
+        expect( tbody.xpath('//td').map(&:content) ).to eq ['robert', '', '']
+      end
+    end
   end
 end

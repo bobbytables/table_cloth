@@ -41,7 +41,7 @@ module TableCloth
       end
 
       def column_for_object(column, object)
-        td_options = column.options[:td_options] || {}
+        td_options = column.options[:td_options].try(:dup) || {}
         value = column.value(object, view_context, table)
 
         if value.is_a?(Array)
