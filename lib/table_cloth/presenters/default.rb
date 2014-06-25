@@ -5,7 +5,7 @@ module TableCloth
         @render_table ||= ElementFactory::Element.new(:table, tag_options(:table)).tap do |table|
           table << thead
           table << tbody
-        end
+        end.to_html
       end
 
       def thead
