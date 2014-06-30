@@ -51,6 +51,12 @@ describe TableCloth::Presenters::Default do
       expect(tbody.css('tr').size).to be 3
     end
 
+    it "creates a row with attributes from row_attributes" do
+      tbody = Nokogiri::HTML(subject.tbody.to_s)
+      expect(tbody.css('tr:first-child').first.attribute("class").value).to eq("quazimodo-is-awesome")
+      expect(tbody.css('tr:first-child').first.attribute("name").value).to eq("What a handsome quazimodo")
+    end
+
     context 'escaped values' do
       let(:objects) do
         FactoryGirl.build_list(:dummy_model, 1,

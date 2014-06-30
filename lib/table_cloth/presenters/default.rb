@@ -33,7 +33,9 @@ module TableCloth
       end
 
       def row_for_object(object)
-        ElementFactory::Element.new(:tr, tag_options(:tr).merge(tr_options(object))).tap do |row|
+        tr_options = table.class.tr_options_for(object)
+
+        ElementFactory::Element.new(:tr, tag_options(:tr).merge(tr_options)).tap do |row|
           columns.each do |column|
             row << column_for_object(column, object)
           end
@@ -58,15 +60,6 @@ module TableCloth
         end
 
         ElementFactory::Element.new(:td, tag_options(:td).merge(td_options))
-      end
-
-      def tr_options(object)
-        options = table.class.tr_options.clone
-        if (block = options.delete(:proc))
-          results = block.call(object) || {}
-          options.merge!(results)
-        end
-        options
       end
     end
   end

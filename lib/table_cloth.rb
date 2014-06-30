@@ -19,6 +19,7 @@ module TableCloth
 
   module Extensions
     autoload :Actions, "table_cloth/extensions/actions"
+    autoload :RowAttributes, "table_cloth/extensions/row_attributes"
   end
 
   class << self
