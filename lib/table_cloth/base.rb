@@ -59,6 +59,21 @@ module TableCloth
           Configuration.new
         end
       end
+
+      def row_attributes(*args, &block)
+        @tr_options ||= {}
+        options = args.extract_options! || {}
+        options[:proc] = block if block_given?
+        @tr_options = options
+      end
+
+      def tr_options
+        @tr_options ||= {}
+        if superclass.respond_to? :tr_options
+          @tr_options = superclass.tr_options.merge(@tr_options)
+        end
+        @tr_options
+      end
     end
   end
 end
