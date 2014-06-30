@@ -1,6 +1,7 @@
 module TableCloth
   class Base
     include TableCloth::Extensions::Actions
+    include TableCloth::Extensions::RowAttributes
 
     NoPresenterError = Class.new(Exception)
 
