@@ -6,19 +6,19 @@ module TableCloth::Extensions::Actions
       @action = action
     end
 
-    def available?(object)
+    def available?(object, table)
       case action_if
       when Proc
         return !!action_if.call(object)
       when Symbol
-        return !!object.send(action_if)
+        return !!table.send(action_if)
       end
 
       case action_unless
       when Proc
         return !action_unless.call(object)
       when Symbol
-        return !object.send(action_unless)
+        return !table.send(action_unless)
       end
 
       return true

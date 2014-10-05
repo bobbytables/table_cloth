@@ -4,6 +4,7 @@ describe TableCloth::Extensions::Actions::Jury do
   let(:action) { FactoryGirl.build(:action, options: action_options) }
   subject { described_class.new(action) }
   let(:model) { double("model") }
+  let(:table) { TableCloth::Base.new(nil, nil) }
 
   context "Proc" do
     context "if .available?" do
@@ -11,12 +12,12 @@ describe TableCloth::Extensions::Actions::Jury do
 
       it "returns true for valid models" do
         model.stub state: "valid"
-        expect(subject).to be_available(model)
+        expect(subject).to be_available(model, table)
       end
 
       it "returns false for invalid models" do
         model.stub state: "invalid"
-        expect(subject).not_to be_available(model)
+        expect(subject).not_to be_available(model, table)
       end
     end
 
@@ -25,12 +26,12 @@ describe TableCloth::Extensions::Actions::Jury do
       
       it "returns true for valid models" do
         model.stub state: "valid"
-        expect(subject).to be_available(model)
+        expect(subject).to be_available(model, table)
       end
 
       it "returns false for invalid models" do
         model.stub state: "invalid"
-        expect(subject).not_to be_available(model)
+        expect(subject).not_to be_available(model, table)
       end
     end
   end
@@ -40,13 +41,13 @@ describe TableCloth::Extensions::Actions::Jury do
       let(:action_options) { {if: :valid?} }
 
       it "returns true for valid?" do
-        model.stub valid?: true
-        expect(subject).to be_available(model)
+        table.stub valid?: true
+        expect(subject).to be_available(model, table)
       end
 
       it "returns true for valid?" do
-        model.stub valid?: false
-        expect(subject).not_to be_available(model)
+        table.stub valid?: false
+        expect(subject).not_to be_available(model, table)
       end
     end
 
@@ -54,13 +55,13 @@ describe TableCloth::Extensions::Actions::Jury do
       let(:action_options) { {unless: :valid?} }
       
       it "returns true for valid models" do
-        model.stub valid?: false
-        expect(subject).to be_available(model)
+        table.stub valid?: false
+        expect(subject).to be_available(model, table)
       end
 
       it "returns false for invalid models" do
-        model.stub valid?: true
-        expect(subject).not_to be_available(model)
+        table.stub valid?: true
+        expect(subject).not_to be_available(model, table)
       end
     end
   end

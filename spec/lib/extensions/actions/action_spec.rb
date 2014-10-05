@@ -15,12 +15,13 @@ describe TableCloth::Extensions::Actions::Action do
   context "#value" do
     let(:model) { FactoryGirl.build(:dummy_model) }
     let(:view_context) { ActionView::Base.new }
+    let(:table) { TableCloth::Base.new(nil, nil) }
 
     context "string" do
       let(:action_hash) { {proc: Proc.new{ "something" }} }
 
       it "returns a string" do
-        expect(subject.value(model, view_context)).to match /something/
+        expect(subject.value(model, view_context, table)).to match /something/
       end
     end
 
@@ -30,8 +31,8 @@ describe TableCloth::Extensions::Actions::Action do
       end
 
       it "returns a link" do
-        expect(subject.value(model, view_context)).to match /href="something"/
-        expect(subject.value(model, view_context)).to match />blank</
+        expect(subject.value(model, view_context, table)).to match /href="something"/
+        expect(subject.value(model, view_context, table)).to match />blank</
       end
     end
 
@@ -45,12 +46,12 @@ describe TableCloth::Extensions::Actions::Action do
 
       it "returns the link when the model condition succeeds" do
         model.stub admin?: true
-        expect(subject.value(model, view_context)).to include "something"
+        expect(subject.value(model, view_context, table)).to include "something"
       end
 
       it "does not return the link when the model condition fails" do
         model.stub admin?: false
-        expect(subject.value(model, view_context)).not_to include "something"
+        expect(subject.value(model, view_context, table)).not_to include "something"
       end
     end
   end
