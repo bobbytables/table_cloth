@@ -2,7 +2,7 @@ module TableCloth::Extensions::Actions
   class Column < ::TableCloth::Column
     def value(object, view, table=nil)
       actions = action_collection.actions.map do |action|
-        action.value(object, view)
+        action.value(object, view, table)
       end
 
       view.raw(actions.join(separator))
