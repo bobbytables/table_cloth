@@ -92,7 +92,7 @@ You can create your own column by making a class that responds to ```.value(obje
 
 ```ruby
 class ImageColumn < TableCloth::Column
-  def value(object, view)
+  def value(object, view, table)
     view.raw(view.image_tag(object.image_url))
   end
 end
