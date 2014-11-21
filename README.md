@@ -107,6 +107,44 @@ In your table:
 <% end %>
 ```
 
+## Rows
+
+You can add HTML attributes to all rows by passing in a hash.
+
+```ruby
+class UserTable < DefaultTable
+  row_attributes class: "danger", name: "user-table-row"
+
+  column :name
+end
+```
+Which would render something like
+
+```html
+<tr class="danger" name="user-table-row"><td>dangerous-john</td></tr>
+<tr class="danger" name="user-table-row"><td>totally-safe-bridgette</td></tr>
+```
+
+Or you can generate attributes for each row by passing in a block that is evaluated each time a row is created. This block must return a hash of attributes.
+
+```ruby
+class UserTable < DefaultTable
+  row_attributes do |user|
+     css_class = user.is_dangerous? ? "danger" : ""
+    {class: css_class, name: "#{user.name}-row"}
+  end
+
+  column :name
+end
+```
+
+which would render something like
+
+```html
+<tr class="danger" name="dangerous-john-row"><td>dangerous-john</td></tr>
+<tr class="" name="totally-safe-bridgette-row"><td>totally-safe-bridgette</td></tr>
+```
+
 ## Actions
 
 A lot of tables have an actions column to give you the full CRUD effect. They can be painful but Table Cloth incorporates a way to easily add them to your definition:
