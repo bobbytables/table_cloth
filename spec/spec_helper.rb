@@ -4,6 +4,7 @@ require 'nokogiri'
 require 'factory_girl'
 require 'pry'
 require 'simplecov'
+require 'rspec/collection_matchers'
 
 if ENV["COVERAGE"] == "true"
   SimpleCov.start do
