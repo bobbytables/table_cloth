@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe TableCloth::ColumnJury do
-  let(:dummy_table) { stub(:table, admin?: true, moderator?: false) }
+  let(:dummy_table) { double(:table, admin?: true, moderator?: false) }
 
   subject { TableCloth::ColumnJury.new(column, dummy_table) }
 

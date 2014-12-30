@@ -39,7 +39,7 @@ describe TableCloth::Base do
     end
 
     context "custom" do
-      let(:custom_column) { stub(:custom, value: "AN EMAIL") }
+      let(:custom_column) { double(:custom, value: "AN EMAIL") }
 
       it '.column can take a custom column' do
         subject.column :email, using: custom_column
