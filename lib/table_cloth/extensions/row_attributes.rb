@@ -21,10 +21,10 @@ module TableCloth
           @tr_options
         end
 
-        def tr_options_for(object)
+        def tr_options_for(object, view_context)
           options = tr_options
           if options.include?(:proc)
-            result = options[:proc].call(object) || {}
+            result = options[:proc].call(object, view_context) || {}
             options.except(:proc).merge(result)
           else
             options
