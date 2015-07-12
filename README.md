@@ -1,3 +1,11 @@
+# Unmaintained
+
+As much as I'd love for this project to be a solution for your projects tables needs, I simply haven't maintained it in too long.
+
+Cheers,
+- Bobby Tables
+
+
 # Table Cloth
 
 Table Cloth gives you an easy to use DSL for creating and rendering tables in rails.
