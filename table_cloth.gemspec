@@ -26,6 +26,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency('factory_girl')
   gem.add_development_dependency('guard-rspec')
   gem.add_development_dependency('rake')
+  gem.add_development_dependency('codecov', '~> 0.1.7')
   gem.add_development_dependency('rb-fsevent', '~> 0.9.4')
 
   gem.add_dependency('actionpack', '>= 3.1', '< 5.0')

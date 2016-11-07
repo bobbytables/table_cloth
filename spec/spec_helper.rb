@@ -3,14 +3,18 @@ require 'awesome_print'
 require 'nokogiri'
 require 'factory_girl'
 require 'pry'
-require 'simplecov'
 require 'rspec/collection_matchers'
 
 if ENV["COVERAGE"] == "true"
+  require 'codecov'
+  require 'simplecov'
+
+  SimpleCov.formatter = SimpleCov::Formatter::Codecov
   SimpleCov.start do
     add_filter "spec/support"
   end
 end
+
 
 Dir['./spec/support/**/*.rb'].each {|f| require f }
 
@@ -24,3 +28,4 @@ RSpec.configure do |config|
   config.filter_run :focus
   config.include ElementHelpers
 end
+
