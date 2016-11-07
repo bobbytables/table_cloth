@@ -6,8 +6,8 @@ require 'pry'
 require 'rspec/collection_matchers'
 
 if ENV["COVERAGE"] == "true"
-  require 'codecov'
   require 'simplecov'
+  require 'codecov'
 
   SimpleCov.formatter = SimpleCov::Formatter::Codecov
   SimpleCov.start do
