@@ -16,7 +16,7 @@ module TableCloth
 
       def tbody
         @tbody ||= ElementFactory::Element.new(:tbody, tag_options(:tbody)).tap do |tbody|
-          objects.each {|object| tbody << row_for_object(object) }
+          objects.each {|object| tbody << row_for_object(object, view_context) }
         end
       end
 
@@ -32,8 +32,8 @@ module TableCloth
         end
       end
 
-      def row_for_object(object)
-        tr_options = table.class.tr_options_for(object)
+      def row_for_object(object, view_context)
+        tr_options = table.class.tr_options_for(object, view_context)
 
         ElementFactory::Element.new(:tr, tag_options(:tr).merge(tr_options)).tap do |row|
           columns.each do |column|
